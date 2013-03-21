@@ -12,3 +12,39 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
 #endif
+
+//=============================
+#define iPhone5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
+
+//记录消息推送device token的类型，用于区分多个不同应用
+#define TOKEN_TYPE @"discount30"
+
+
+//是否点击过去评价按钮
+#define IS_CLICKED_GIVE_GOOD_BTN_KEY @"isClickedGiveGoodBtnKey"
+
+#define ScreenHeight [[UIScreen mainScreen] bounds].size.height
+#define ScreenWidth [[UIScreen mainScreen] bounds].size.width
+#define StateBarHeight 20
+#define MainHeight (ScreenHeight - StateBarHeight)
+#define MainWidth ScreenWidth
+
+
+#define DEVICETOKENSTRINGKEY @"DeviceTokenStringKey"
+#define DEVICETOKENREGISTEREDKEY @"isDeviceTokenRegistered"
+
+//友盟app key
+#define YOUMENG_APP_KEY @"50b5b4cf5270153e3100000a"
+
+//微信app id
+#define WEIXIN_APP_ID @"wx161de154679af00d"
+
+//项目名称
+#define PROJECT_NAME @"男装折扣精选"
+
+//新浪微博
+#define kWBKeyAppKey                    @"2796878419"
+#define kWBKeyAppSecret                 @"a517807ec1b5a884f0f857e67132f8be"
+
+//分享短语
+#define WEIBO_SHARE_CONTENT             @"#桃小仙# 《男装折扣精选》天天有特价，每日皆精品！AppStore下载地址:https://itunes.apple.com/us/app/nan-zhuang-zhe-kou-jing-xuan/id582589074?ls=1&mt=8"

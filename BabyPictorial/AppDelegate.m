@@ -8,10 +8,14 @@
 
 #import "AppDelegate.h"
 
+#import "MainViewController.h"
+
 @implementation AppDelegate
 
 - (void)dealloc
 {
+    self.navController = nil;
+    
     [_window release];
     [super dealloc];
 }
@@ -20,6 +24,15 @@
 {
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
+    
+    self.navController = [[UINavigationController alloc]
+                          initWithRootViewController:[[[MainViewController alloc] initWithNibName:@"MainViewController"
+                                                                                           bundle:nil] autorelease]];
+    
+    [self.navController setNavigationBarHidden:YES];
+    
+    self.window.rootViewController = self.navController;
+    
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
