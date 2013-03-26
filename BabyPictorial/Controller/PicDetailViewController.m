@@ -9,7 +9,17 @@
 #import "PicDetailViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
+#import "PicDetailInterface.h"    
+#import "EGOImageView.h"
+
+#import "PicDetailModel.h"
+#import "AlbumModel.h"
+
+#import "AlbumView.h"
+
 @interface PicDetailViewController ()
+
+@property (nonatomic,retain) PicDetailInterface *interface;
 
 @end
 
@@ -28,6 +38,15 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    self.interface = [[[PicDetailInterface alloc] init] autorelease];
+    self.interface.delegate = self;
+    [self.interface getPicDetailByPid:self.pid];
+    
+    
+    
+    
+    
     
     self.picContainer.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"img_bg_2.png"]];
     
@@ -83,10 +102,50 @@
 
 -(void)dealloc
 {
+    self.pid = nil;
+    
     self.detailContainer = nil;
     self.picContainer = nil;
     
+    self.interface.delegate = nil;
+    self.interface = nil;
+    
+    self.imageView = nil;
+    self.descriptionLabel = nil;
+    
+    self.ownerAlbumView = nil;
+    
     [super dealloc];
 }
+
+#pragma mark - PicDetailInterfaceDelegate
+
+-(void)getPicDetailDidFinished:(PicDetailModel *)pdm
+{
+    self.imageView.imageURL = [NSURL URLWithString:pdm.picUrl];
+    
+    self.descriptionLabel.text = pdm.description;
+    
+    
+    AlbumView *albumView = [[[NSBundle mainBundle] loadNibNamed:@"AlbumView"
+                                                          owner:self
+                                                        options:nil] objectAtIndex:0];
+    
+    albumView.frame = CGRectMake( 2
+                                 , 0
+                                 , albumView.frame.size.width
+                                 , albumView.frame.size.height);
+    
+    [albumView setImageUrls:pdm.ownerAlbum.picArray];
+    [albumView.titleLabel setText:pdm.ownerAlbum.albumName];
+    
+    [self.ownerAlbumView addSubview:albumView];
+}
+
+-(void)getPicDetailDidFailed:(NSString *)errorMsg
+{
+    NSLog(@"=======%@",errorMsg);
+}
+
 
 @end

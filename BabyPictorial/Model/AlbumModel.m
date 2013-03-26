@@ -10,11 +10,20 @@
 
 @implementation AlbumModel
 
+-(id)init
+{
+    if (self = [super init]) {
+        self.picArray = [NSMutableArray array];
+    }
+    
+    return self;
+}
+
 -(void)dealloc
 {
     self.albumId = nil;
     self.albumName = nil;
-    self.picUrls = nil;
+    self.picArray = nil;
     
     [super dealloc];
 }

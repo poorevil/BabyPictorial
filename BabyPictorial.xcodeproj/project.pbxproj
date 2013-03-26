@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4E0E82E817006C990047F438 /* PicDetailInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E0E82E717006C990047F438 /* PicDetailInterface.m */; };
 		4E1327BC16F7FD63005BF6A5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E1327BB16F7FD63005BF6A5 /* UIKit.framework */; };
 		4E1327BE16F7FD63005BF6A5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E1327BD16F7FD63005BF6A5 /* Foundation.framework */; };
 		4E1327C016F7FD63005BF6A5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E1327BF16F7FD63005BF6A5 /* CoreGraphics.framework */; };
@@ -129,6 +130,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4E0E82E617006C990047F438 /* PicDetailInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicDetailInterface.h; sourceTree = "<group>"; };
+		4E0E82E717006C990047F438 /* PicDetailInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicDetailInterface.m; sourceTree = "<group>"; };
 		4E1327B816F7FD63005BF6A5 /* BabyPictorial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BabyPictorial.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E1327BB16F7FD63005BF6A5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		4E1327BD16F7FD63005BF6A5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -357,8 +360,6 @@
 		4E1327AF16F7FD63005BF6A5 = {
 			isa = PBXGroup;
 			children = (
-				4E1328F616F8086D005BF6A5 /* libz.1.2.5.dylib */,
-				4E1328F416F8081F005BF6A5 /* libsqlite3.0.dylib */,
 				4E1327C116F7FD63005BF6A5 /* BabyPictorial */,
 				4E1327BA16F7FD63005BF6A5 /* Frameworks */,
 				4E1327B916F7FD63005BF6A5 /* Products */,
@@ -376,6 +377,8 @@
 		4E1327BA16F7FD63005BF6A5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4E1328F616F8086D005BF6A5 /* libz.1.2.5.dylib */,
+				4E1328F416F8081F005BF6A5 /* libsqlite3.0.dylib */,
 				4E1328EF16F8074B005BF6A5 /* MessageUI.framework */,
 				4E1328ED16F80700005BF6A5 /* MobileCoreServices.framework */,
 				4E1328EB16F806F8005BF6A5 /* SystemConfiguration.framework */,
@@ -783,6 +786,8 @@
 				4E13291B16F96349005BF6A5 /* BaseInterface.m */,
 				4E13292016F96399005BF6A5 /* MainPageInterface.h */,
 				4E13292116F96399005BF6A5 /* MainPageInterface.m */,
+				4E0E82E617006C990047F438 /* PicDetailInterface.h */,
+				4E0E82E717006C990047F438 /* PicDetailInterface.m */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -1004,6 +1009,7 @@
 				4E13292516F963AD005BF6A5 /* PicDetailModel.m in Sources */,
 				4E13292816F963C4005BF6A5 /* AlbumModel.m in Sources */,
 				4E2ABBBD16FA1CB40062E679 /* PicDetailViewController.m in Sources */,
+				4E0E82E817006C990047F438 /* PicDetailInterface.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

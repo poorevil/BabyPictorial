@@ -12,6 +12,6 @@
 
 @property (nonatomic,retain) NSString *albumId;
 @property (nonatomic,retain) NSString *albumName;
-@property (nonatomic,retain) NSArray *picUrls;
+@property (nonatomic,retain) NSMutableArray *picArray;
 
 @end

@@ -13,6 +13,8 @@
 @property (nonatomic,retain) IBOutlet UILabel *titleLabel;
 @property (nonatomic,retain) IBOutlet UIView *imageContener;
 
+@property (nonatomic,retain) NSArray *urlArray;
+
 
 -(void)setImageUrls:(NSArray *)urlArray;
 

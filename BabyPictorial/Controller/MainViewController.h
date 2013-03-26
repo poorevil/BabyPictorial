@@ -15,4 +15,6 @@
 
 @property (retain,nonatomic) IBOutlet UIScrollView *mScrollView;
 
+@property (retain,nonatomic) IBOutlet UIScrollView *detailsScrollView;
+
 @end

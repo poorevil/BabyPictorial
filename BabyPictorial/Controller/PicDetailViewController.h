@@ -8,9 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PicDetailViewController : UIViewController
+@protocol PicDetailInterfaceDelegate;
+@class EGOImageView;
+
+@interface PicDetailViewController : UIViewController <PicDetailInterfaceDelegate>
 
 @property (nonatomic,retain) IBOutlet UIView *detailContainer;
 @property (nonatomic,retain) IBOutlet UIView *picContainer;
+
+@property (nonatomic,retain) NSString *pid;
+
+@property (nonatomic,retain) IBOutlet EGOImageView *imageView;
+@property (nonatomic,retain) IBOutlet UILabel *descriptionLabel;
+@property (nonatomic,retain) IBOutlet UIView *ownerAlbumView;
 
 @end

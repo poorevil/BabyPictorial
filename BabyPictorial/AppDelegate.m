@@ -29,7 +29,8 @@
                           initWithRootViewController:[[[MainViewController alloc] initWithNibName:@"MainViewController"
                                                                                            bundle:nil] autorelease]];
     
-    [self.navController setNavigationBarHidden:YES];
+    
+//    [self.navController setNavigationBarHidden:YES];
     
     self.window.rootViewController = self.navController;
     

@@ -11,6 +11,7 @@
 #import "MainPageInterface.h"
 
 #import "AlbumModel.h"
+
 #import "AlbumView.h"
 #import "PicDetailViewController.h"
 
@@ -42,11 +43,14 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    self.mScrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height+164);
+    
+    self.detailsScrollView.contentSize = CGSizeMake(0, 0);
+    
+    
     _pageNum = 0;
     _hasNext = YES;
     _isLoading = YES;
-    
-    self.mScrollView.contentSize = CGSizeMake(self.view.frame.size.width, 280);
     
     self.interface = [[[MainPageInterface alloc] init] autorelease];
     self.interface.delegate = self;
@@ -67,21 +71,35 @@
     self.interface.delegate = nil;
     self.interface = nil;
     
+    self.detailsScrollView = nil;
+    
     [super dealloc];
 }
 
 #pragma mark - UIScrollViewDelegate
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    if (scrollView == self.detailsScrollView) {
+        
+        CGPoint bottomOffset = CGPointMake(0, self.mScrollView.contentSize.height - self.mScrollView.bounds.size.height);
+        [self.mScrollView setContentOffset:bottomOffset animated:YES];
+    }
+}
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (scrollView.contentOffset.y+scrollView.frame.size.height >= scrollView.contentSize.height
-        && !_isLoading) {
+    if (scrollView == self.detailsScrollView) {
         
-        _isLoading = YES;
-        self.interface = [[[MainPageInterface alloc] init] autorelease];
-        self.interface.delegate = self;
-        
-        [self.interface getAlbumListByPageNum:_pageNum];
-        
+        if (scrollView.contentOffset.x+scrollView.frame.size.width >= scrollView.contentSize.width
+            && !_isLoading) {
+            
+            _isLoading = YES;
+            self.interface = [[[MainPageInterface alloc] init] autorelease];
+            self.interface.delegate = self;
+            
+            [self.interface getAlbumListByPageNum:_pageNum];
+            
+        }
     }
 }
 
@@ -91,7 +109,10 @@
     _hasNext = YES;
     _pageNum++;
     
-    NSInteger offset = self.mScrollView.contentSize.height;
+    NSInteger offsetW = 0;
+    NSInteger offsetH = 0;
+    
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(self.detailsScrollView.contentSize.width, 0, 984, 528)];
     
     for (NSInteger idx = 0;idx < resultArray.count ; idx++) {
         
@@ -101,26 +122,37 @@
                                                               owner:self
                                                             options:nil] objectAtIndex:0];
         
-        albumView.frame = CGRectMake(20+(20+albumView.frame.size.width)*(idx%3)
-                                     , offset +(albumView.frame.size.height+20)*(idx/3)
+        albumView.frame = CGRectMake( offsetW 
+                                     ,offsetH
                                      , albumView.frame.size.width
                                      , albumView.frame.size.height);
-        [albumView setImageUrls:[model picUrls]];
+        
+        [albumView setImageUrls:model.picArray];
         [albumView.titleLabel setText:[model albumName]];
         
         albumView.layer.cornerRadius = 4;
         
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
-        albumView.userInteractionEnabled = YES;
-        [albumView addGestureRecognizer:tap];
-        [tap release];
+//        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
+//        albumView.userInteractionEnabled = YES;
+//        [albumView addGestureRecognizer:tap];
+//        [tap release];
         
         
-        [self.mScrollView addSubview:albumView];
+        [view addSubview:albumView];
         
-        self.mScrollView.contentSize = CGSizeMake(self.mScrollView.frame.size.width
-                                                  , 20+albumView.frame.size.height+albumView.frame.origin.y);
+        offsetW = (20 + albumView.frame.size.width) * ((idx+1)%3);
+        offsetH = (20 + albumView.frame.size.height) * ((idx+1)/3);
+        
     }
+    
+    [self.detailsScrollView addSubview:view];
+    
+    
+    
+    self.detailsScrollView.contentSize = CGSizeMake(view.frame.size.width + self.detailsScrollView.contentSize.width
+                                                    , view.frame.size.height);
+    
+    [view release];
     
     _isLoading = NO;
     
@@ -134,13 +166,13 @@
     _hasNext = NO;
 }
 
--(void)tapAction:(UITapGestureRecognizer *)gesture
-{
-    PicDetailViewController *col = [[PicDetailViewController alloc] initWithNibName:@"PicDetailViewController"
-                                                                             bundle:nil];
-    
-    [self.navigationController pushViewController:col animated:YES];
-    [col release];
-}
+//-(void)tapAction:(UITapGestureRecognizer *)gesture
+//{
+//    PicDetailViewController *col = [[PicDetailViewController alloc] initWithNibName:@"PicDetailViewController"
+//                                                                             bundle:nil];
+//    
+//    [self.navigationController pushViewController:col animated:YES];
+//    [col release];
+//}
 
 @end
