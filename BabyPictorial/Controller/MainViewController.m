@@ -14,6 +14,7 @@
 
 #import "AlbumView.h"
 #import "PicDetailViewController.h"
+#import "WaterflowViewController.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -43,10 +44,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.gif"]];
+    
     self.mScrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height+164);
     
     self.detailsScrollView.contentSize = CGSizeMake(0, 0);
-    
     
     _pageNum = 0;
     _hasNext = YES;
@@ -56,6 +58,19 @@
     self.interface.delegate = self;
     
     [self.interface getAlbumListByPageNum:_pageNum];
+    
+    self.adImageView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(adImageViewTapAction:)];
+    [self.adImageView addGestureRecognizer:tap];
+    [tap release];
+}
+
+-(void)adImageViewTapAction:(UIGestureRecognizer *)gesture
+{
+    WaterflowViewController *waterflowController = [[[WaterflowViewController alloc] initWithNibName:@"WaterflowViewController"
+                                                                                              bundle:nil] autorelease];
+    
+    [self.navigationController pushViewController:waterflowController animated:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -72,6 +87,8 @@
     self.interface = nil;
     
     self.detailsScrollView = nil;
+    
+    self.adImageView = nil;
     
     [super dealloc];
 }
@@ -103,56 +120,89 @@
     }
 }
 
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if (scrollView == self.detailsScrollView) {
+        
+        for(UIView *view in [self.detailsScrollView subviews]){
+            
+            if (view.tag == 999) {
+                
+                for (AlbumView *albumView in view.subviews) {
+
+                    CGRect frame = view.frame;
+                    frame.origin.x -= self.detailsScrollView.contentOffset.x;
+                    
+                    CGRect theScreenWidthFrame = CGRectMake(-self.view.frame.size.width
+                                                            , 0
+                                                            , 2*self.view.frame.size.width
+                                                            , self.view.frame.size.height);
+                    
+                    
+                    if (CGRectIntersectsRect(frame, theScreenWidthFrame)) {//相交，显示图片
+                        
+                        [albumView reloadSubViewsImage];
+                    
+                    }else{//销毁图片
+                    
+                        [albumView releaseSubViewsImage];
+                    
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 #pragma mark - MainPageInterfaceDelegate
 -(void)getAlbumListDidFinished:(NSArray *)resultArray
 {
-    _hasNext = YES;
-    _pageNum++;
-    
-    NSInteger offsetW = 0;
-    NSInteger offsetH = 0;
-    
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(self.detailsScrollView.contentSize.width, 0, 984, 528)];
-    
-    for (NSInteger idx = 0;idx < resultArray.count ; idx++) {
+    if (resultArray.count>0) {
         
-        AlbumModel *model = [resultArray objectAtIndex:idx];
+        _hasNext = YES;
+        _pageNum++;
         
-        AlbumView *albumView = [[[NSBundle mainBundle] loadNibNamed:@"AlbumView"
-                                                              owner:self
-                                                            options:nil] objectAtIndex:0];
+        NSInteger offsetW = 0;
+        NSInteger offsetH = 0;
         
-        albumView.frame = CGRectMake( offsetW 
-                                     ,offsetH
-                                     , albumView.frame.size.width
-                                     , albumView.frame.size.height);
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(self.detailsScrollView.contentSize.width, 0, 984, 528)];
         
-        [albumView setImageUrls:model.picArray];
-        [albumView.titleLabel setText:[model albumName]];
+        view.tag = 999;
         
-        albumView.layer.cornerRadius = 4;
+        for (NSInteger idx = 0;idx < resultArray.count ; idx++) {
+            
+            AlbumModel *model = [resultArray objectAtIndex:idx];
+            
+            AlbumView *albumView = [[[NSBundle mainBundle] loadNibNamed:@"AlbumView"
+                                                                  owner:self
+                                                                options:nil] objectAtIndex:0];
+            
+            albumView.frame = CGRectMake( offsetW 
+                                         ,offsetH
+                                         , albumView.frame.size.width
+                                         , albumView.frame.size.height);
+            
+            albumView.albumModel = model;
+            
+            albumView.layer.cornerRadius = 4;            
+            
+            [view addSubview:albumView];
+            
+            offsetW = (20 + albumView.frame.size.width) * ((idx+1)%3);
+            offsetH = (20 + albumView.frame.size.height) * ((idx+1)/3);
+            
+        }
         
-//        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
-//        albumView.userInteractionEnabled = YES;
-//        [albumView addGestureRecognizer:tap];
-//        [tap release];
+        [self.detailsScrollView addSubview:view];
         
         
-        [view addSubview:albumView];
         
-        offsetW = (20 + albumView.frame.size.width) * ((idx+1)%3);
-        offsetH = (20 + albumView.frame.size.height) * ((idx+1)/3);
+        self.detailsScrollView.contentSize = CGSizeMake(view.frame.size.width + self.detailsScrollView.contentSize.width
+                                                        , view.frame.size.height);
         
+        [view release];
     }
-    
-    [self.detailsScrollView addSubview:view];
-    
-    
-    
-    self.detailsScrollView.contentSize = CGSizeMake(view.frame.size.width + self.detailsScrollView.contentSize.width
-                                                    , view.frame.size.height);
-    
-    [view release];
     
     _isLoading = NO;
     

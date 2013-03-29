@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4E01D5B51701435600776F60 /* WaterflowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E01D5B31701435600776F60 /* WaterflowViewController.m */; };
+		4E01D5B61701435600776F60 /* WaterflowViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E01D5B41701435600776F60 /* WaterflowViewController.xib */; };
+		4E01D5B91701438600776F60 /* PicWaterflowInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E01D5B81701438600776F60 /* PicWaterflowInterface.m */; };
+		4E01D5BC170168B600776F60 /* PicWaterflowTileView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E01D5BB170168B600776F60 /* PicWaterflowTileView.m */; };
+		4E01D5BE170168C800776F60 /* PicWaterflowTileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E01D5BD170168C800776F60 /* PicWaterflowTileView.xib */; };
+		4E01D5C6170456E400776F60 /* RecommendAlbumView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E01D5C5170456E400776F60 /* RecommendAlbumView.m */; };
+		4E01D5C8170456F400776F60 /* RecommendAlbumView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E01D5C7170456F300776F60 /* RecommendAlbumView.xib */; };
+		4E01D5CA17052A7300776F60 /* DividerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4E01D5C917052A7300776F60 /* DividerView.xib */; };
+		4E01D5CD17052B7D00776F60 /* DividerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E01D5CC17052B7C00776F60 /* DividerView.m */; };
+		4E01D5CF1705703E00776F60 /* bg.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4E01D5CE1705703E00776F60 /* bg.gif */; };
 		4E0E82E817006C990047F438 /* PicDetailInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E0E82E717006C990047F438 /* PicDetailInterface.m */; };
 		4E1327BC16F7FD63005BF6A5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E1327BB16F7FD63005BF6A5 /* UIKit.framework */; };
 		4E1327BE16F7FD63005BF6A5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E1327BD16F7FD63005BF6A5 /* Foundation.framework */; };
@@ -130,6 +140,21 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4E01D5B21701435600776F60 /* WaterflowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaterflowViewController.h; sourceTree = "<group>"; };
+		4E01D5B31701435600776F60 /* WaterflowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaterflowViewController.m; sourceTree = "<group>"; };
+		4E01D5B41701435600776F60 /* WaterflowViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WaterflowViewController.xib; sourceTree = "<group>"; };
+		4E01D5B71701438600776F60 /* PicWaterflowInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicWaterflowInterface.h; sourceTree = "<group>"; };
+		4E01D5B81701438600776F60 /* PicWaterflowInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicWaterflowInterface.m; sourceTree = "<group>"; };
+		4E01D5BA170168B600776F60 /* PicWaterflowTileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicWaterflowTileView.h; sourceTree = "<group>"; };
+		4E01D5BB170168B600776F60 /* PicWaterflowTileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicWaterflowTileView.m; sourceTree = "<group>"; };
+		4E01D5BD170168C800776F60 /* PicWaterflowTileView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PicWaterflowTileView.xib; sourceTree = "<group>"; };
+		4E01D5C4170456E300776F60 /* RecommendAlbumView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendAlbumView.h; sourceTree = "<group>"; };
+		4E01D5C5170456E400776F60 /* RecommendAlbumView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendAlbumView.m; sourceTree = "<group>"; };
+		4E01D5C7170456F300776F60 /* RecommendAlbumView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecommendAlbumView.xib; sourceTree = "<group>"; };
+		4E01D5C917052A7300776F60 /* DividerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DividerView.xib; sourceTree = "<group>"; };
+		4E01D5CB17052B7C00776F60 /* DividerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DividerView.h; sourceTree = "<group>"; };
+		4E01D5CC17052B7C00776F60 /* DividerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DividerView.m; sourceTree = "<group>"; };
+		4E01D5CE1705703E00776F60 /* bg.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = bg.gif; sourceTree = "<group>"; };
 		4E0E82E617006C990047F438 /* PicDetailInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicDetailInterface.h; sourceTree = "<group>"; };
 		4E0E82E717006C990047F438 /* PicDetailInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicDetailInterface.m; sourceTree = "<group>"; };
 		4E1327B816F7FD63005BF6A5 /* BabyPictorial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BabyPictorial.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -775,6 +800,9 @@
 				4E2ABBBA16FA1CB40062E679 /* PicDetailViewController.h */,
 				4E2ABBBB16FA1CB40062E679 /* PicDetailViewController.m */,
 				4E2ABBBC16FA1CB40062E679 /* PicDetailViewController.xib */,
+				4E01D5B21701435600776F60 /* WaterflowViewController.h */,
+				4E01D5B31701435600776F60 /* WaterflowViewController.m */,
+				4E01D5B41701435600776F60 /* WaterflowViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -788,6 +816,8 @@
 				4E13292116F96399005BF6A5 /* MainPageInterface.m */,
 				4E0E82E617006C990047F438 /* PicDetailInterface.h */,
 				4E0E82E717006C990047F438 /* PicDetailInterface.m */,
+				4E01D5B71701438600776F60 /* PicWaterflowInterface.h */,
+				4E01D5B81701438600776F60 /* PicWaterflowInterface.m */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -809,6 +839,7 @@
 			isa = PBXGroup;
 			children = (
 				4E2ABBC016FA236D0062E679 /* img_bg_2.png */,
+				4E01D5CE1705703E00776F60 /* bg.gif */,
 				4E2ABBBF16FA235B0062E679 /* tmp */,
 			);
 			path = Resource;
@@ -820,6 +851,15 @@
 				4E13291516F95F9C005BF6A5 /* AlbumView.h */,
 				4E13291616F95F9C005BF6A5 /* AlbumView.m */,
 				4E13291816F95FB4005BF6A5 /* AlbumView.xib */,
+				4E01D5BA170168B600776F60 /* PicWaterflowTileView.h */,
+				4E01D5BB170168B600776F60 /* PicWaterflowTileView.m */,
+				4E01D5BD170168C800776F60 /* PicWaterflowTileView.xib */,
+				4E01D5C4170456E300776F60 /* RecommendAlbumView.h */,
+				4E01D5C5170456E400776F60 /* RecommendAlbumView.m */,
+				4E01D5C7170456F300776F60 /* RecommendAlbumView.xib */,
+				4E01D5C917052A7300776F60 /* DividerView.xib */,
+				4E01D5CB17052B7C00776F60 /* DividerView.h */,
+				4E01D5CC17052B7C00776F60 /* DividerView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -933,6 +973,11 @@
 				4E13291916F95FB4005BF6A5 /* AlbumView.xib in Resources */,
 				4E2ABBBE16FA1CB40062E679 /* PicDetailViewController.xib in Resources */,
 				4E2ABBC116FA236D0062E679 /* img_bg_2.png in Resources */,
+				4E01D5B61701435600776F60 /* WaterflowViewController.xib in Resources */,
+				4E01D5BE170168C800776F60 /* PicWaterflowTileView.xib in Resources */,
+				4E01D5C8170456F400776F60 /* RecommendAlbumView.xib in Resources */,
+				4E01D5CA17052A7300776F60 /* DividerView.xib in Resources */,
+				4E01D5CF1705703E00776F60 /* bg.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1010,6 +1055,11 @@
 				4E13292816F963C4005BF6A5 /* AlbumModel.m in Sources */,
 				4E2ABBBD16FA1CB40062E679 /* PicDetailViewController.m in Sources */,
 				4E0E82E817006C990047F438 /* PicDetailInterface.m in Sources */,
+				4E01D5B51701435600776F60 /* WaterflowViewController.m in Sources */,
+				4E01D5B91701438600776F60 /* PicWaterflowInterface.m in Sources */,
+				4E01D5BC170168B600776F60 /* PicWaterflowTileView.m in Sources */,
+				4E01D5C6170456E400776F60 /* RecommendAlbumView.m in Sources */,
+				4E01D5CD17052B7D00776F60 /* DividerView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

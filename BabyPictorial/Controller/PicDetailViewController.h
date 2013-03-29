@@ -10,16 +10,25 @@
 
 @protocol PicDetailInterfaceDelegate;
 @class EGOImageView;
+@protocol EGOImageViewDelegate;
 
-@interface PicDetailViewController : UIViewController <PicDetailInterfaceDelegate>
+
+@interface PicDetailViewController : UIViewController <PicDetailInterfaceDelegate
+,UIScrollViewDelegate,EGOImageViewDelegate>
 
 @property (nonatomic,retain) IBOutlet UIView *detailContainer;
-@property (nonatomic,retain) IBOutlet UIView *picContainer;
+
+@property (nonatomic,retain) IBOutlet UIScrollView *mScrollView;
+
+@property (nonatomic,retain) IBOutlet EGOImageView *imageView;
+
+@property (nonatomic,retain) IBOutlet UIView *picContainer;//图片父view
 
 @property (nonatomic,retain) NSString *pid;
 
-@property (nonatomic,retain) IBOutlet EGOImageView *imageView;
+
 @property (nonatomic,retain) IBOutlet UILabel *descriptionLabel;
-@property (nonatomic,retain) IBOutlet UIView *ownerAlbumView;
+
+@property (nonatomic,retain) IBOutlet UIView *rightContainer;//右侧图片最外层view
 
 @end

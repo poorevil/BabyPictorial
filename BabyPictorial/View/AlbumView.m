@@ -14,6 +14,10 @@
 
 #import "AppDelegate.h"
 
+#import "AlbumModel.h"
+
+#import "WaterflowViewController.h"
+
 @implementation AlbumView
 
 - (id)initWithFrame:(CGRect)frame
@@ -25,9 +29,27 @@
     return self;
 }
 
+-(void)setAlbumModel:(AlbumModel *)albumModel
+{
+    [_albumModel release];
+    _albumModel = nil;
+    
+    _albumModel = [albumModel retain];
+    
+    self.titleLabel.text = [self.albumModel.albumName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(albumTapAction:)];
+    
+    self.titleLabel.userInteractionEnabled = YES;
+    [self.titleLabel addGestureRecognizer:tap];
+    
+    [tap release];
+    
+    [self setImageUrls:self.albumModel.picArray];
+}
+
 -(void)setImageUrls:(NSArray *)urlArray
 {
-    self.urlArray = urlArray;
     
     for (NSInteger idx = 0 ; idx < urlArray.count ; idx++) {
         PicDetailModel *pdm = [urlArray objectAtIndex:idx];
@@ -52,10 +74,41 @@
     }
 }
 
+-(void)releaseSubViewsImage{//释放所有子view的图片
+    
+    for (UIView *view in [self.imageContener subviews]) {
+        
+        if ([view isMemberOfClass:[EGOImageView class]]) {
+            EGOImageView *imageView = (EGOImageView *)view;
+            
+            [imageView cancelImageLoad];
+            imageView.image = nil;
+        }
+    }
+}
+
+-(void)reloadSubViewsImage{//重载所有子view的图片
+    
+    for (UIView *view in [self.imageContener subviews]) {
+        
+        if ([view isMemberOfClass:[EGOImageView class]]) {
+            EGOImageView *imageView = (EGOImageView *)view;
+            
+            PicDetailModel *pdm = [self.albumModel.picArray objectAtIndex:view.tag];
+            
+            NSString *url = [NSString stringWithFormat:@"%@_100x100.jpg",pdm.picUrl];
+            
+            imageView.imageURL = [NSURL URLWithString:url];
+        }
+    }
+    
+}
+
 -(void)dealloc
 {
     
-    self.urlArray = nil;
+//    self.urlArray = nil;
+    self.albumModel = nil;
     self.titleLabel = nil;
     self.imageContener = nil;
     
@@ -69,11 +122,24 @@
     PicDetailViewController *col = [[PicDetailViewController alloc] initWithNibName:@"PicDetailViewController"
                                                                              bundle:nil];
     
-    col.pid = [[self.urlArray objectAtIndex:idx] pid];
+    col.pid = [[self.albumModel.picArray objectAtIndex:idx] pid];
     
     AppDelegate *mainDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
     [mainDelegate.navController pushViewController:col animated:YES];
     [col release];
+}
+
+-(void)albumTapAction:(UITapGestureRecognizer *)gesture
+{
+    WaterflowViewController *col = [[WaterflowViewController alloc] initWithNibName:@"WaterflowViewController"
+//                                                                            albumId:self.albumModel.albumId
+                                                                             bundle:nil];
+    col.albumId = self.albumModel.albumId;
+    
+    AppDelegate *mainDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
+    [mainDelegate.navController pushViewController:col animated:YES];
+    [col release];
+    
 }
 
 @end

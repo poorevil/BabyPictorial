@@ -17,6 +17,10 @@
 
 #import "AlbumView.h"
 
+#import "RecommendAlbumView.h"
+
+#import "DividerView.h"
+
 @interface PicDetailViewController ()
 
 @property (nonatomic,retain) PicDetailInterface *interface;
@@ -39,17 +43,37 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.gif"]];
+    
     self.interface = [[[PicDetailInterface alloc] init] autorelease];
     self.interface.delegate = self;
     [self.interface getPicDetailByPid:self.pid];
     
+    //返回首页
+    UIBarButtonItem *homeBtn = [[UIBarButtonItem alloc]
+                                   initWithTitle:@"home"
+                                   style:UIBarButtonItemStyleBordered
+                                   target:self
+                                   action:@selector(homeAction)];
+    self.navigationItem.rightBarButtonItem = homeBtn;
+    [homeBtn release];
     
-    
-    
+    self.mScrollView.contentSize = self.view.frame.size;
     
     
     self.picContainer.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"img_bg_2.png"]];
     
+    
+    self.detailContainer.layer.borderColor = [UIColor colorWithWhite:1 alpha:0.85].CGColor;
+    self.detailContainer.layer.borderWidth = 1;
+    self.rightContainer.layer.borderColor = [UIColor colorWithWhite:1 alpha:0.85].CGColor;
+    self.rightContainer.layer.borderWidth = 1;
+    
+    [self setShadow];
+}
+
+-(void)setShadow
+{
     //self.picContainer.superview 阴影
     self.picContainer.superview.layer.shadowColor = [UIColor blackColor].CGColor;
     self.picContainer.superview.layer.shadowOpacity = 0.2;
@@ -79,9 +103,9 @@
     path = [UIBezierPath bezierPath];
     
     topLeft      = CGPointMake(0.0, 6.0);
-    bottomLeft   = CGPointMake(0.0, CGRectGetHeight(self.detailContainer.bounds)+3);
+    bottomLeft   = CGPointMake(0.0, CGRectGetHeight(self.detailContainer.bounds)+6);
     bottomRight  = CGPointMake(CGRectGetWidth(self.detailContainer.bounds)+2
-                               , CGRectGetHeight(self.detailContainer.bounds)+3);
+                               , CGRectGetHeight(self.detailContainer.bounds)+6);
     topRight     = CGPointMake(CGRectGetWidth(self.detailContainer.bounds)+2, 3.0);
     
     [path moveToPoint:topLeft];
@@ -93,6 +117,7 @@
     
     self.detailContainer.layer.shadowPath = path.CGPath;
 }
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -113,7 +138,9 @@
     self.imageView = nil;
     self.descriptionLabel = nil;
     
-    self.ownerAlbumView = nil;
+    self.mScrollView = nil;
+    
+    self.rightContainer = nil;
     
     [super dealloc];
 }
@@ -122,9 +149,11 @@
 
 -(void)getPicDetailDidFinished:(PicDetailModel *)pdm
 {
+    self.imageView.delegate = self;
     self.imageView.imageURL = [NSURL URLWithString:pdm.picUrl];
     
-    self.descriptionLabel.text = pdm.description;
+    
+    self.descriptionLabel.text = pdm.descTitle;
     
     
     AlbumView *albumView = [[[NSBundle mainBundle] loadNibNamed:@"AlbumView"
@@ -136,10 +165,55 @@
                                  , albumView.frame.size.width
                                  , albumView.frame.size.height);
     
-    [albumView setImageUrls:pdm.ownerAlbum.picArray];
-    [albumView.titleLabel setText:pdm.ownerAlbum.albumName];
+    albumView.albumModel = pdm.ownerAlbum;
     
-    [self.ownerAlbumView addSubview:albumView];
+    [self.detailContainer addSubview:albumView];
+    
+    //分割线
+    DividerView *dv = [[[NSBundle mainBundle] loadNibNamed:@"DividerView"
+                                                     owner:self
+                                                   options:nil] objectAtIndex:0];
+    
+    CGRect frame = dv.frame;
+    
+    frame.origin.y = [[self.detailContainer.subviews lastObject] frame].origin.y
+    +[[self.detailContainer.subviews lastObject] frame].size.height+20;
+    
+    dv.frame = frame;
+    
+    [self.detailContainer addSubview:dv];
+    
+    //推荐图集
+    for (AlbumModel *am in pdm.recommendAlbumArray) {
+        
+        RecommendAlbumView *rav = [[[NSBundle mainBundle] loadNibNamed:@"RecommendAlbumView"
+                                                                 owner:self
+                                                               options:nil] objectAtIndex:0];
+        
+        CGRect frame = rav.frame;
+        
+        frame.origin.y = [[self.detailContainer.subviews lastObject] frame].origin.y
+        +[[self.detailContainer.subviews lastObject] frame].size.height;
+        
+        rav.frame = frame;
+        
+        rav.albumModel = am;
+        
+        [self.detailContainer addSubview:rav];
+        
+        CGRect dcFrame = self.detailContainer.frame;
+        dcFrame.size.height = (rav.frame.origin.y+rav.frame.size.height);
+        
+        self.detailContainer.frame = dcFrame;
+        
+        self.mScrollView.contentSize = CGSizeMake(self.view.frame.size.width
+                                                  , self.detailContainer.frame.origin.y+self.detailContainer.frame.size.height+10);
+        
+        
+    }
+    
+    [self setShadow];
+    
 }
 
 -(void)getPicDetailDidFailed:(NSString *)errorMsg
@@ -147,5 +221,33 @@
     NSLog(@"=======%@",errorMsg);
 }
 
+
+#pragma mark -homeAction
+-(void)homeAction
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+#pragma mark - EGOImageViewDelegate
+- (void)imageViewLoadedImage:(EGOImageView*)imageView
+{
+    UIView *parentView = imageView.superview;
+    
+    CGRect imageFrame = imageView.frame;
+    imageFrame.size.height = imageFrame.size.width / imageView.image.size.width  * imageView.image.size.height;
+    
+    
+    CGRect parentFrame = parentView.frame;
+    parentFrame.size.height += (imageFrame.size.height - imageView.frame.size.height);
+    parentView.frame = parentFrame;
+    
+    imageView.frame = imageFrame;
+    
+    CGRect frame = parentView.superview.frame;
+    frame.size.height = parentView.frame.size.height + parentView.frame.origin.y;
+    parentView.superview.frame = frame;
+    
+    [self setShadow];
+}
 
 @end

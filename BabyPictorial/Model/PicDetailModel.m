@@ -28,7 +28,7 @@
     
     self.albumId = nil;
     self.userId = nil;
-    self.description = nil;
+    self.descTitle = nil;
     self.taokePrice = nil;
 
     self.time = nil;

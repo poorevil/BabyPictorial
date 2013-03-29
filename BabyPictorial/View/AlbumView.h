@@ -8,14 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@class AlbumModel;
+
 @interface AlbumView : UIView
 
 @property (nonatomic,retain) IBOutlet UILabel *titleLabel;
 @property (nonatomic,retain) IBOutlet UIView *imageContener;
 
-@property (nonatomic,retain) NSArray *urlArray;
+@property (nonatomic,retain) AlbumModel *albumModel;
 
+-(void)releaseSubViewsImage;
 
--(void)setImageUrls:(NSArray *)urlArray;
+-(void)reloadSubViewsImage;
 
 @end

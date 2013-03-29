@@ -87,7 +87,7 @@
             
             pdm.albumId = [picDict objectForKey:@"albunm_id"];
             pdm.userId = [picDict objectForKey:@"user_id"];
-            pdm.description = [picDict objectForKey:@"description"];
+            pdm.descTitle = [picDict objectForKey:@"description"];
             pdm.taokePrice = [picDict objectForKey:@"taoke_price"];
             pdm.pid = [picDict objectForKey:@"pid"];
             pdm.rootCateId = [[picDict objectForKey:@"root_cate_id"] integerValue];

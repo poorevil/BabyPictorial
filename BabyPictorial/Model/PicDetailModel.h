@@ -17,7 +17,7 @@
 
 @property (nonatomic,retain) NSString *albumId;
 @property (nonatomic,retain) NSString *userId;
-@property (nonatomic,retain) NSString *description;
+@property (nonatomic,retain) NSString *descTitle;
 @property (nonatomic,retain) NSString *taokePrice;
 @property (nonatomic,assign) NSInteger rootCateId;
 @property (nonatomic,assign) NSInteger height;

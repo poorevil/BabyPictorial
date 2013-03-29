@@ -17,4 +17,6 @@
 
 @property (retain,nonatomic) IBOutlet UIScrollView *detailsScrollView;
 
+@property (retain,nonatomic) IBOutlet UIImageView *adImageView;
+
 @end
