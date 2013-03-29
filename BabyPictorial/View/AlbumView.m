@@ -18,6 +18,8 @@
 
 #import "WaterflowViewController.h"
 
+#import <QuartzCore/QuartzCore.h>
+
 @implementation AlbumView
 
 - (id)initWithFrame:(CGRect)frame
@@ -27,6 +29,12 @@
         // Initialization code
     }
     return self;
+}
+
+-(void)awakeFromNib
+{
+    self.layer.borderColor = [UIColor colorWithWhite:1 alpha:0.7 ].CGColor;
+    self.layer.borderWidth = 1;
 }
 
 -(void)setAlbumModel:(AlbumModel *)albumModel
@@ -122,7 +130,10 @@
     PicDetailViewController *col = [[PicDetailViewController alloc] initWithNibName:@"PicDetailViewController"
                                                                              bundle:nil];
     
+    col.title = self.albumModel.albumName;
     col.pid = [[self.albumModel.picArray objectAtIndex:idx] pid];
+    col.smallPicUrl = ((EGOImageView *)gesture.view).imageURL;
+    
     
     AppDelegate *mainDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
     [mainDelegate.navController pushViewController:col animated:YES];
@@ -135,6 +146,7 @@
 //                                                                            albumId:self.albumModel.albumId
                                                                              bundle:nil];
     col.albumId = self.albumModel.albumId;
+    col.albumName = self.albumModel.albumName;
     
     AppDelegate *mainDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
     [mainDelegate.navController pushViewController:col animated:YES];

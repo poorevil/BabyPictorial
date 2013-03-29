@@ -67,6 +67,8 @@
     self.navigationItem.rightBarButtonItem = homeBtn;
     [homeBtn release];
     
+    self.navigationItem.title = self.albumName;
+    
     self.mscrollView = [[[UIScrollView alloc] initWithFrame:self.view.frame] autorelease];
     self.mscrollView.contentSize = CGSizeMake(self.view.frame.size.width, 0);
     self.mscrollView.delegate = self;
@@ -99,6 +101,8 @@
     self.interface = nil;
     
     self.albumId = nil;
+    
+    self.albumName = nil;
     
     [super dealloc];
 }

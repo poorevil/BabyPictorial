@@ -31,4 +31,8 @@
 
 @property (nonatomic,retain) IBOutlet UIView *rightContainer;//右侧图片最外层view
 
+@property (nonatomic,retain) NSURL *smallPicUrl;//小图标url地址
+
+@property (nonatomic,retain) NSString *title;
+
 @end

@@ -101,7 +101,9 @@
     PicDetailViewController *col = [[PicDetailViewController alloc] initWithNibName:@"PicDetailViewController"
                                                                              bundle:nil];
     
+    col.title = self.albumModel.albumName;
     col.pid = [[self.albumModel.picArray objectAtIndex:idx] pid];
+    col.smallPicUrl = ((EGOImageView *)gesture.view).imageURL;
     
     AppDelegate *mainDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
     [mainDelegate.navController pushViewController:col animated:YES];
@@ -113,6 +115,7 @@
     WaterflowViewController *col = [[WaterflowViewController alloc] initWithNibName:@"WaterflowViewController"
                                                                              bundle:nil];
     col.albumId = self.albumModel.albumId;
+    col.albumName = self.albumModel.albumName;
     
     AppDelegate *mainDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
     [mainDelegate.navController pushViewController:col animated:YES];

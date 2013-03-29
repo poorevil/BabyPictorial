@@ -14,5 +14,6 @@
 
 @property (nonatomic,retain) NSString *albumId;
 
+@property (nonatomic,retain) NSString *albumName;
 
 @end

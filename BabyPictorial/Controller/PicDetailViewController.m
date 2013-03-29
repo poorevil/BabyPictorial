@@ -51,12 +51,14 @@
     
     //返回首页
     UIBarButtonItem *homeBtn = [[UIBarButtonItem alloc]
-                                   initWithTitle:@"home"
+                                   initWithTitle:@"首页"
                                    style:UIBarButtonItemStyleBordered
                                    target:self
                                    action:@selector(homeAction)];
     self.navigationItem.rightBarButtonItem = homeBtn;
     [homeBtn release];
+    
+    self.navigationItem.title = self.title;
     
     self.mScrollView.contentSize = self.view.frame.size;
     
@@ -69,7 +71,17 @@
     self.rightContainer.layer.borderColor = [UIColor colorWithWhite:1 alpha:0.85].CGColor;
     self.rightContainer.layer.borderWidth = 1;
     
-    [self setShadow];
+    
+    EGOImageView *tmpImg = [[[EGOImageView alloc] init] autorelease];
+    tmpImg.imageURL = self.smallPicUrl;
+    
+    self.smallPicUrl = nil;
+    
+    self.imageView.placeholderImage = tmpImg.image;
+    self.imageView.imageURL = nil;
+    
+    [self imageViewLoadedImage:self.imageView];
+    
 }
 
 -(void)setShadow
@@ -118,6 +130,17 @@
     self.detailContainer.layer.shadowPath = path.CGPath;
 }
 
+//更新scrollview高度
+-(void)updateScrollViewContentSize
+{
+    CGRect detailFrame = self.detailContainer.frame;
+    CGRect rightContainerFrame = self.rightContainer.frame;
+    
+    self.mScrollView.contentSize = CGSizeMake(self.view.frame.size.width
+                                              , MAX(detailFrame.size.height, rightContainerFrame.size.height)
+                                              + 40 + 20);
+}
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -127,6 +150,8 @@
 
 -(void)dealloc
 {
+    self.title = nil;
+    
     self.pid = nil;
     
     self.detailContainer = nil;
@@ -141,6 +166,8 @@
     self.mScrollView = nil;
     
     self.rightContainer = nil;
+    
+    self.smallPicUrl = nil;
     
     [super dealloc];
 }
@@ -214,6 +241,8 @@
     
     [self setShadow];
     
+    [self updateScrollViewContentSize];
+    
 }
 
 -(void)getPicDetailDidFailed:(NSString *)errorMsg
@@ -248,6 +277,8 @@
     parentView.superview.frame = frame;
     
     [self setShadow];
+    
+    [self updateScrollViewContentSize];
 }
 
 @end

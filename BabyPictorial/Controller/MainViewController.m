@@ -46,7 +46,7 @@
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.gif"]];
     
-    self.mScrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height+164);
+    self.mScrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height+264);
     
     self.detailsScrollView.contentSize = CGSizeMake(0, 0);
     
@@ -67,8 +67,9 @@
 
 -(void)adImageViewTapAction:(UIGestureRecognizer *)gesture
 {
-    WaterflowViewController *waterflowController = [[[WaterflowViewController alloc] initWithNibName:@"WaterflowViewController"
-                                                                                              bundle:nil] autorelease];
+    WaterflowViewController *waterflowController = [[[WaterflowViewController alloc]
+                                                     initWithNibName:@"WaterflowViewController"
+                                                     bundle:nil] autorelease];
     
     [self.navigationController pushViewController:waterflowController animated:YES];
 }
@@ -166,7 +167,7 @@
         NSInteger offsetW = 0;
         NSInteger offsetH = 0;
         
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(self.detailsScrollView.contentSize.width, 0, 984, 528)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(self.detailsScrollView.contentSize.width, 0, 1004, 528)];
         
         view.tag = 999;
         
@@ -185,7 +186,7 @@
             
             albumView.albumModel = model;
             
-            albumView.layer.cornerRadius = 4;            
+//            albumView.layer.cornerRadius = 4;            
             
             [view addSubview:albumView];
             
@@ -206,6 +207,7 @@
     
     _isLoading = NO;
     
+    [self scrollViewDidScroll:self.detailsScrollView];
 }
 
 -(void)getAlbumListDidFailed:(NSString *)errorMsg
@@ -215,14 +217,5 @@
     
     _hasNext = NO;
 }
-
-//-(void)tapAction:(UITapGestureRecognizer *)gesture
-//{
-//    PicDetailViewController *col = [[PicDetailViewController alloc] initWithNibName:@"PicDetailViewController"
-//                                                                             bundle:nil];
-//    
-//    [self.navigationController pushViewController:col animated:YES];
-//    [col release];
-//}
 
 @end

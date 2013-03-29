@@ -13,6 +13,7 @@
 
 #import "AppDelegate.h"
 #import "PicDetailViewController.h"
+#import "AlbumModel.h"
 
 @implementation PicWaterflowTileView
 
@@ -107,7 +108,9 @@
     PicDetailViewController *col = [[PicDetailViewController alloc] initWithNibName:@"PicDetailViewController"
                                                                              bundle:nil];
     
+    col.title = self.pdm.albumName;
     col.pid = self.pdm.pid;
+    col.smallPicUrl = self.imageView.imageURL;
     
     AppDelegate *mainDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
     [mainDelegate.navController pushViewController:col animated:YES];
