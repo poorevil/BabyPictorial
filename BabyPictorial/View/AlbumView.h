@@ -15,6 +15,8 @@
 @property (nonatomic,retain) IBOutlet UILabel *titleLabel;
 @property (nonatomic,retain) IBOutlet UIView *imageContener;
 
+@property (nonatomic,retain) IBOutlet UIView *titlContainerView;
+
 @property (nonatomic,retain) AlbumModel *albumModel;
 
 -(void)releaseSubViewsImage;

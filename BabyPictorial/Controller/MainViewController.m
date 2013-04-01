@@ -18,6 +18,8 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+#import "JSAnimatedImagesView.h"
+
 @interface MainViewController (){
     NSInteger _pageNum ;
     Boolean _hasNext;
@@ -44,6 +46,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    self.navigationItem.title = @"宝贝画报HD";
+    
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.gif"]];
     
     self.mScrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height+264);
@@ -59,9 +63,13 @@
     
     [self.interface getAlbumListByPageNum:_pageNum];
     
-    self.adImageView.userInteractionEnabled = YES;
+    self.adView.delegate = self;
+    
+    [self.adView startAnimating];
+    
+    self.adView.userInteractionEnabled = YES;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(adImageViewTapAction:)];
-    [self.adImageView addGestureRecognizer:tap];
+    [self.adView addGestureRecognizer:tap];
     [tap release];
 }
 
@@ -72,6 +80,22 @@
                                                      bundle:nil] autorelease];
     
     [self.navigationController pushViewController:waterflowController animated:YES];
+}
+
+-(NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskLandscape;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    if (toInterfaceOrientation == UIInterfaceOrientationPortrait
+        || toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+        
+        return NO;
+    }
+    
+    return YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -89,7 +113,7 @@
     
     self.detailsScrollView = nil;
     
-    self.adImageView = nil;
+    self.adView = nil;
     
     [super dealloc];
 }
@@ -193,6 +217,33 @@
             offsetW = (20 + albumView.frame.size.width) * ((idx+1)%3);
             offsetH = (20 + albumView.frame.size.height) * ((idx+1)/3);
             
+            albumView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin
+            | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin
+            | UIViewAutoresizingFlexibleBottomMargin;
+            
+            albumView.layer.shadowOffset = CGSizeMake(0.5, 0.5);
+            albumView.layer.shadowColor = [UIColor blackColor].CGColor;
+            albumView.layer.shadowOpacity = 0.3;
+            
+            // mArticleListTileView.layer.shouldRasterize = YES;
+            
+            // shadow
+            UIBezierPath *path = [UIBezierPath bezierPath];
+            
+            CGPoint topLeft      = albumView.bounds.origin;
+            CGPoint bottomLeft   = CGPointMake(0.0, CGRectGetHeight(albumView.bounds));
+            CGPoint bottomRight  = CGPointMake(CGRectGetWidth(albumView.bounds), CGRectGetHeight(albumView.bounds));
+            CGPoint topRight     = CGPointMake(CGRectGetWidth(albumView.bounds), 0.0);
+            
+            [path moveToPoint:topLeft];
+            [path addLineToPoint:bottomLeft];
+            [path addLineToPoint:bottomRight];
+            [path addLineToPoint:topRight];
+            [path addLineToPoint:topLeft];
+            [path closePath];
+            
+            albumView.layer.shadowPath = path.CGPath;
+            
         }
         
         [self.detailsScrollView addSubview:view];
@@ -216,6 +267,33 @@
     _isLoading = NO;
     
     _hasNext = NO;
+}
+
+#pragma mark - JSAnimatedImagesViewDelegate
+- (NSUInteger)animatedImagesNumberOfImages:(JSAnimatedImagesView *)animatedImagesView
+{
+    return 5;
+}
+
+- (UIImage *)animatedImagesView:(JSAnimatedImagesView *)animatedImagesView imageAtIndex:(NSUInteger)index
+{
+    switch (index) {
+        case 0:
+            return [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ad2" ofType:@"png"]];
+        case 1:
+            return [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ad3" ofType:@"png"]];
+        case 2:
+            return [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ad1" ofType:@"png"]];
+        case 3:
+            return [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ad4" ofType:@"png"]];
+        case 4:
+            return [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ad5" ofType:@"png"]];
+            
+        default:
+            break;
+    }
+    
+    return [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ad2" ofType:@"png"]];
 }
 
 @end

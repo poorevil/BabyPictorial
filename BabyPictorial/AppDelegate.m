@@ -10,6 +10,8 @@
 
 #import "MainViewController.h"
 
+#import "MobClick.h"
+
 @implementation AppDelegate
 
 - (void)dealloc
@@ -25,6 +27,10 @@
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
     
+    [MobClick startWithAppkey:YOUMENG_APP_KEY reportPolicy:REALTIME channelId:nil];
+    //检查更新
+    [MobClick checkUpdate];
+    
     self.navController = [[UINavigationController alloc]
                           initWithRootViewController:[[[MainViewController alloc] initWithNibName:@"MainViewController"
                                                                                            bundle:nil] autorelease]];
@@ -32,7 +38,18 @@
     
 //    [self.navController setNavigationBarHidden:YES];
     
-    self.window.rootViewController = self.navController;
+    
+    if ( [[UIDevice currentDevice].systemVersion floatValue] < 6.0)
+    { // warning: addSubView doesn't work on iOS6
+        
+        [self.window addSubview:self.navController.view];
+    }
+    else
+    { // use this mehod on ios6
+
+        self.window.rootViewController = self.navController;
+        
+    }
     
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];

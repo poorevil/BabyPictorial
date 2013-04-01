@@ -48,8 +48,8 @@
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(albumTapAction:)];
     
-    self.titleLabel.userInteractionEnabled = YES;
-    [self.titleLabel addGestureRecognizer:tap];
+    self.titlContainerView.userInteractionEnabled = YES;
+    [self.titlContainerView addGestureRecognizer:tap];
     
     [tap release];
     
@@ -66,10 +66,13 @@
         
         CGRect frame = CGRectMake(idx%3 * 100, idx>2?100:0, 98, 98);
         
-        EGOImageView *image = [[[EGOImageView alloc] initWithFrame:frame] autorelease];
+        EGOImageView *image = [[EGOImageView alloc] initWithFrame:frame];
         image.contentMode = UIViewContentModeScaleAspectFit;
         image.clipsToBounds = YES;
         image.tag = idx;
+        
+        image.layer.borderColor = [UIColor colorWithWhite:0.9 alpha:0.9].CGColor;
+        image.layer.borderWidth = 1;
         
         image.imageURL = [NSURL URLWithString:url];
         
@@ -79,6 +82,8 @@
         image.userInteractionEnabled = YES;
         [image addGestureRecognizer:tap];
         [tap release];
+        
+        [image release];
     }
 }
 
@@ -120,17 +125,20 @@
     self.titleLabel = nil;
     self.imageContener = nil;
     
+    self.titlContainerView = nil;
+    
     [super dealloc];
 }
 
 -(void)tapAction:(UITapGestureRecognizer *)gesture
 {
+    
     NSInteger idx = gesture.view.tag;
     
     PicDetailViewController *col = [[PicDetailViewController alloc] initWithNibName:@"PicDetailViewController"
                                                                              bundle:nil];
     
-    col.title = self.albumModel.albumName;
+    col.navTitle = self.albumModel.albumName;
     col.pid = [[self.albumModel.picArray objectAtIndex:idx] pid];
     col.smallPicUrl = ((EGOImageView *)gesture.view).imageURL;
     
@@ -138,6 +146,7 @@
     AppDelegate *mainDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
     [mainDelegate.navController pushViewController:col animated:YES];
     [col release];
+    
 }
 
 -(void)albumTapAction:(UITapGestureRecognizer *)gesture

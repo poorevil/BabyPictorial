@@ -21,9 +21,17 @@
 
 #import "DividerView.h"
 
+#import "PicDetailTaokeMsgView.h"
+
+#import "TaokeItemDetailInterface.h"
+
+#import "SVWebViewController.h"
+
 @interface PicDetailViewController ()
 
 @property (nonatomic,retain) PicDetailInterface *interface;
+
+@property (nonatomic,retain) TaokeItemDetailInterface *taokeItemDetailInterface;
 
 @end
 
@@ -51,14 +59,14 @@
     
     //返回首页
     UIBarButtonItem *homeBtn = [[UIBarButtonItem alloc]
-                                   initWithTitle:@"首页"
+                                   initWithTitle:@"宝贝画报HD"
                                    style:UIBarButtonItemStyleBordered
                                    target:self
                                    action:@selector(homeAction)];
     self.navigationItem.rightBarButtonItem = homeBtn;
     [homeBtn release];
     
-    self.navigationItem.title = self.title;
+    self.navigationItem.title = self.navTitle;
     
     self.mScrollView.contentSize = self.view.frame.size;
     
@@ -80,7 +88,8 @@
     self.imageView.placeholderImage = tmpImg.image;
     self.imageView.imageURL = nil;
     
-    [self imageViewLoadedImage:self.imageView];
+    if (self.imageView.image)
+        [self imageViewLoadedImage:self.imageView];
     
 }
 
@@ -133,12 +142,16 @@
 //更新scrollview高度
 -(void)updateScrollViewContentSize
 {
-    CGRect detailFrame = self.detailContainer.frame;
-    CGRect rightContainerFrame = self.rightContainer.frame;
+    
+    CGPoint bottomPoint = CGPointZero;
+    
+    for (UIView *view in self.mScrollView.subviews) {
+        
+        bottomPoint.y = MAX(bottomPoint.y, (view.frame.size.height + view.frame.origin.y));
+    }
     
     self.mScrollView.contentSize = CGSizeMake(self.view.frame.size.width
-                                              , MAX(detailFrame.size.height, rightContainerFrame.size.height)
-                                              + 40 + 20);
+                                              , bottomPoint.y + 20);
 }
 
 
@@ -150,7 +163,10 @@
 
 -(void)dealloc
 {
-    self.title = nil;
+    self.taokeItemDetailInterface.delegate = nil;
+    self.taokeItemDetailInterface = nil;
+    
+    self.navTitle = nil;
     
     self.pid = nil;
     
@@ -169,6 +185,8 @@
     
     self.smallPicUrl = nil;
     
+    self.pdm = nil;
+    
     [super dealloc];
 }
 
@@ -178,6 +196,8 @@
 {
     self.imageView.delegate = self;
     self.imageView.imageURL = [NSURL URLWithString:pdm.picUrl];
+    
+    self.pdm = pdm;
     
     
     self.descriptionLabel.text = pdm.descTitle;
@@ -243,6 +263,11 @@
     
     [self updateScrollViewContentSize];
     
+    
+    self.taokeItemDetailInterface = [[[TaokeItemDetailInterface alloc] init] autorelease];
+    self.taokeItemDetailInterface.delegate = self;
+    [self.taokeItemDetailInterface getTaokeItemDetailsByNumiid:self.pdm.taokeNumiid];
+    
 }
 
 -(void)getPicDetailDidFailed:(NSString *)errorMsg
@@ -263,7 +288,8 @@
     UIView *parentView = imageView.superview;
     
     CGRect imageFrame = imageView.frame;
-    imageFrame.size.height = imageFrame.size.width / imageView.image.size.width  * imageView.image.size.height;
+
+    imageFrame.size.height = (CGFloat)imageFrame.size.width / (CGFloat)imageView.image.size.width  * imageView.image.size.height;
     
     
     CGRect parentFrame = parentView.frame;
@@ -279,6 +305,54 @@
     [self setShadow];
     
     [self updateScrollViewContentSize];
+}
+
+#pragma mark - TaokeItemDetailInterfaceDelegate
+-(void)getTaokeItemDetailsByNumiidDidFinished:(NSString *)url
+{
+    self.pdm.taokeUrl = url;
+    
+    PicDetailTaokeMsgView *ptmv = [[[NSBundle mainBundle] loadNibNamed:@"PicDetailTaokeMsgView"
+                                                                 owner:self
+                                                               options:nil] objectAtIndex:0];
+    
+    CGRect ptmvFrame = ptmv.frame;
+    ptmvFrame.origin.x = self.rightContainer.frame.origin.x;
+    ptmvFrame.origin.y = self.rightContainer.frame.origin.y + self.rightContainer.frame.size.height + 10;
+    
+    
+    ptmv.title.text = self.pdm.taokeTitle;
+    ptmv.price.text = [NSString stringWithFormat:@"￥%@",self.pdm.taokePrice];
+    
+    [ptmv.buyBtn addTarget:self
+                    action:@selector(buyBtnAction:)
+          forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    ptmv.frame = ptmvFrame;
+    
+    [self.mScrollView addSubview:ptmv];
+    
+    [self updateScrollViewContentSize];
+}
+
+-(void)getTaokeItemDetailsByNumiidDidFailed
+{
+    NSLog(@"====getTaokeItemDetailsByNumiidDidFailed===");
+}
+
+-(void)buyBtnAction:(id)sender
+{
+    
+    NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"%@&ttid=400000_21125417@txx_iPhone_0.0.0"
+                                       , self.pdm.taokeUrl]];
+    
+    SVWebViewController *webViewController = [[[SVWebViewController alloc] initWithURL:URL
+                                                                            thumbImage:nil
+                                                                                 title:self.pdm.taokeTitle] autorelease];
+    
+    [self.navigationController pushViewController:webViewController animated:YES];
+    
 }
 
 @end

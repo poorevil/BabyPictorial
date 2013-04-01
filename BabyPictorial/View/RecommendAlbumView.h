@@ -19,4 +19,6 @@
 
 @property (nonatomic,retain) AlbumModel *albumModel;
 
+@property (nonatomic,retain) IBOutlet UIView *titlContainerView;
+
 @end

@@ -17,7 +17,7 @@
 
 -(void)getPicDetailByPid:(NSString *)pid
 {
-    self.interfaceUrl = [NSString stringWithFormat:@"http://pic.taoxiaoxian.com/interface/picdetail?pid=%@",pid];
+    self.interfaceUrl = [NSString stringWithFormat:@"http://pic.taoxiaoxian.com/interface/picdetail?pid=%@&cid=9",pid];
     self.baseDelegate = self;
     
     [self connect];

@@ -40,6 +40,8 @@
     
     self.recommendAlbumArray = nil;
     
+    self.taokeUrl = nil;
+    
     [super dealloc];
 }
 @end

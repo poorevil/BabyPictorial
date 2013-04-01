@@ -32,7 +32,7 @@
         [sortedString appendString:[MySingleton sharedSingleton].appSecret];
         
         NSString *signStr = [sortedString md5HexDigest];
-        NSLog(@"--[%@]----------[%@]",sortedString,signStr);
+//        NSLog(@"--[%@]----------[%@]",sortedString,signStr);
         return signStr;
     }
     

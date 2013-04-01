@@ -34,7 +34,7 @@
 #define DEVICETOKENREGISTEREDKEY @"isDeviceTokenRegistered"
 
 //友盟app key
-#define YOUMENG_APP_KEY @"50b5b4cf5270153e3100000a"
+#define YOUMENG_APP_KEY @"5156b1ea56240bb71d0137e5"
 
 //微信app id
 #define WEIXIN_APP_ID @"wx161de154679af00d"

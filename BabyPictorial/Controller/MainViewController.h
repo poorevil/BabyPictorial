@@ -11,12 +11,16 @@
 @class MainPageInterface;
 @protocol MainPageInterfaceDelegate;
 
-@interface MainViewController : UIViewController <UIScrollViewDelegate,MainPageInterfaceDelegate>
+@class JSAnimatedImagesView;
+@protocol JSAnimatedImagesViewDelegate;
+
+@interface MainViewController : UIViewController <UIScrollViewDelegate
+,MainPageInterfaceDelegate,JSAnimatedImagesViewDelegate>
 
 @property (retain,nonatomic) IBOutlet UIScrollView *mScrollView;
 
 @property (retain,nonatomic) IBOutlet UIScrollView *detailsScrollView;
 
-@property (retain,nonatomic) IBOutlet UIImageView *adImageView;
+@property (retain,nonatomic) IBOutlet JSAnimatedImagesView *adView;
 
 @end

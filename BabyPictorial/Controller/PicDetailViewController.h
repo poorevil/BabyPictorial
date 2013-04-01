@@ -11,10 +11,12 @@
 @protocol PicDetailInterfaceDelegate;
 @class EGOImageView;
 @protocol EGOImageViewDelegate;
+@class PicDetailModel;
 
+@protocol TaokeItemDetailInterfaceDelegate;
 
 @interface PicDetailViewController : UIViewController <PicDetailInterfaceDelegate
-,UIScrollViewDelegate,EGOImageViewDelegate>
+,UIScrollViewDelegate,EGOImageViewDelegate,TaokeItemDetailInterfaceDelegate>
 
 @property (nonatomic,retain) IBOutlet UIView *detailContainer;
 
@@ -33,6 +35,9 @@
 
 @property (nonatomic,retain) NSURL *smallPicUrl;//小图标url地址
 
-@property (nonatomic,retain) NSString *title;
+@property (nonatomic,retain) NSString *navTitle;
+
+@property (nonatomic,retain) PicDetailModel *pdm;
+
 
 @end

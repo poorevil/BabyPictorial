@@ -60,7 +60,7 @@
     
     //返回首页
     UIBarButtonItem *homeBtn = [[UIBarButtonItem alloc]
-                                initWithTitle:@"home"
+                                initWithTitle:@"宝贝画报HD"
                                 style:UIBarButtonItemStyleBordered
                                 target:self
                                 action:@selector(homeAction)];

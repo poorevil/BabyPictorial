@@ -108,7 +108,7 @@
     PicDetailViewController *col = [[PicDetailViewController alloc] initWithNibName:@"PicDetailViewController"
                                                                              bundle:nil];
     
-    col.title = self.pdm.albumName;
+    col.navTitle = self.pdm.albumName;
     col.pid = self.pdm.pid;
     col.smallPicUrl = self.imageView.imageURL;
     

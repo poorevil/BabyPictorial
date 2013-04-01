@@ -19,6 +19,8 @@
 
 #import "PicDetailViewController.h"
 
+#import <QuartzCore/QuartzCore.h>
+
 @implementation RecommendAlbumView
 
 - (id)initWithFrame:(CGRect)frame
@@ -50,8 +52,8 @@
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(albumTapAction:)];
     
-    self.albumTitle.userInteractionEnabled = YES;
-    [self.albumTitle addGestureRecognizer:tap];
+    self.titlContainerView.userInteractionEnabled = YES;
+    [self.titlContainerView addGestureRecognizer:tap];
     
     [tap release];
     
@@ -67,6 +69,9 @@
         image.contentMode = UIViewContentModeScaleAspectFill;
         image.clipsToBounds = YES;
         image.tag = idx;
+        
+        image.layer.borderColor = [UIColor colorWithWhite:0.9 alpha:0.9].CGColor;
+        image.layer.borderWidth = 1;
         
         image.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@_100x100.jpg",pdm.picUrl]];
         image.frame = CGRectMake(idx%3 * 100, idx>2?100:0, 98, 98);
@@ -90,6 +95,8 @@
     
     self.albumTitle = nil;
     
+    self.titlContainerView = nil;
+    
     
     [super dealloc];
 }
@@ -101,13 +108,16 @@
     PicDetailViewController *col = [[PicDetailViewController alloc] initWithNibName:@"PicDetailViewController"
                                                                              bundle:nil];
     
-    col.title = self.albumModel.albumName;
+    col.navTitle = self.albumModel.albumName;
     col.pid = [[self.albumModel.picArray objectAtIndex:idx] pid];
     col.smallPicUrl = ((EGOImageView *)gesture.view).imageURL;
-    
+
     AppDelegate *mainDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
+
     [mainDelegate.navController pushViewController:col animated:YES];
+
     [col release];
+
 }
 
 -(void)albumTapAction:(UITapGestureRecognizer *)gesture
