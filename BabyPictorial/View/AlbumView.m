@@ -159,6 +159,7 @@
     
     AppDelegate *mainDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
     [mainDelegate.navController pushViewController:col animated:YES];
+    
     [col release];
     
 }

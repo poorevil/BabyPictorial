@@ -46,6 +46,42 @@
     return self;
 }
 
++ (UIBarButtonItem *)createSquareBarButtonItemWithTitle:(NSString *)t
+                                                 target:(id)tgt
+                                                 action:(SEL)a
+                                              bgImgName:(NSString *)bgImgName
+                                       pressedBgImgName:(NSString *)pressedBgImgName
+{
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    // Since the buttons can be any width we use a thin image with a stretchable center point
+    UIImage *buttonImage = [[UIImage imageNamed:bgImgName] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
+    UIImage *buttonPressedImage = [[UIImage imageNamed:pressedBgImgName] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
+    
+    [[button titleLabel] setFont:[UIFont boldSystemFontOfSize:12.0]];
+    [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+    [button setTitleShadowColor:[UIColor colorWithWhite:1.0 alpha:0.7] forState:UIControlStateNormal];
+    [button setTitleShadowColor:[UIColor clearColor] forState:UIControlStateHighlighted];
+    [[button titleLabel] setShadowOffset:CGSizeMake(0.0, 1.0)];
+    
+    CGRect buttonFrame = [button frame];
+    buttonFrame.size.width = [t sizeWithFont:[UIFont boldSystemFontOfSize:12.0]].width + 24.0;
+    buttonFrame.size.height = buttonImage.size.height;
+    [button setFrame:buttonFrame];
+    
+    [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
+    [button setBackgroundImage:buttonPressedImage forState:UIControlStateHighlighted];
+    
+    [button setTitle:t forState:UIControlStateNormal];
+    
+    [button addTarget:tgt action:a forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    
+    return [buttonItem autorelease];
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -57,14 +93,29 @@
     self.interface.delegate = self;
     [self.interface getPicDetailByPid:self.pid];
     
+    
+    NSString *parentTitle = nil;
+    
+    if (self.navigationController.viewControllers.count>1)
+        parentTitle = [[[self.navigationController.viewControllers
+                         objectAtIndex:self.navigationController.viewControllers.count-2] navigationItem] title];
+    
+    //返回
+    UIBarButtonItem *backBtn = [PicDetailViewController createSquareBarButtonItemWithTitle:parentTitle==nil?@"宝贝画报HD":parentTitle
+                                                                                    target:self
+                                                                                    action:@selector(backAction)
+                                                                                 bgImgName:@"back_btn_bg.png"
+                                                                          pressedBgImgName:@"back_btn_pressed_bg.png"];
+    self.navigationItem.leftBarButtonItem = backBtn;
+    
     //返回首页
-    UIBarButtonItem *homeBtn = [[UIBarButtonItem alloc]
-                                   initWithTitle:@"宝贝画报HD"
-                                   style:UIBarButtonItemStyleBordered
-                                   target:self
-                                   action:@selector(homeAction)];
+    UIBarButtonItem *homeBtn = [PicDetailViewController createSquareBarButtonItemWithTitle:@"宝贝画报HD"
+                                                                                    target:self
+                                                                                    action:@selector(homeAction)
+                                                                                 bgImgName:@"home_btn_bg.png"
+                                                                          pressedBgImgName:@"home_btn_pressed_bg.png"];
     self.navigationItem.rightBarButtonItem = homeBtn;
-    [homeBtn release];
+    
     
     self.navigationItem.title = self.navTitle;
     
@@ -280,6 +331,11 @@
 -(void)homeAction
 {
     [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+-(void)backAction
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - EGOImageViewDelegate

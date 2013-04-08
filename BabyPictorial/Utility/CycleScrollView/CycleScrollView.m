@@ -108,7 +108,7 @@
 {
     CGPoint offsetPoint = scrollView.contentOffset;
     CGRect destRect = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-    destRect.origin.x = offsetPoint.x + 320;
+    destRect.origin.x = offsetPoint.x + self.frame.size.width;
     
     [scrollView scrollRectToVisible:destRect animated:YES];
     

@@ -20,6 +20,14 @@
 
 #import "JSAnimatedImagesView.h"
 
+#import "CycleScrollView.h"
+
+#import "EGOImageView.h"
+
+#import "ADInterface.h"
+
+#import "ADModel.h"
+
 @interface MainViewController (){
     NSInteger _pageNum ;
     Boolean _hasNext;
@@ -27,6 +35,15 @@
 }
 
 @property (nonatomic,retain) MainPageInterface *interface;
+
+@property (nonatomic,retain) NSMutableArray *headerScrollViewArray;//轮播图数组
+
+@property (nonatomic,retain) ADInterface *adInterface;//广告接口
+
+@property (nonatomic,retain) NSArray *adArray;//广告列表
+
+@property (nonatomic,retain) UIView *adTitleGroupView;
+@property (nonatomic,retain) UILabel *adTitleLabel;
 
 @end
 
@@ -46,6 +63,28 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    self.headerScrollViewArray = [NSMutableArray array];
+    
+    self.adTitleGroupView = [[[UIView alloc] initWithFrame:CGRectMake(0, 310, 1024, 50)] autorelease];
+    self.adTitleGroupView.backgroundColor = [UIColor colorWithRed:0
+                                                       green:0
+                                                        blue:0
+                                                       alpha:0.7];
+    
+    self.adTitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(20, 0, 1004, 50)] autorelease];
+    [self.adTitleGroupView addSubview:self.adTitleLabel];
+    self.adTitleLabel.backgroundColor = [UIColor clearColor];
+    self.adTitleLabel.textColor = [UIColor whiteColor];
+    
+    [self.mScrollView addSubview:self.adTitleGroupView];
+    
+    
+    //广告接口
+    self.adInterface = [[[ADInterface alloc] init] autorelease];
+    self.adInterface.delegate = self;
+    [self.adInterface getADList];
+    
+    
     self.navigationItem.title = @"宝贝画报HD";
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.gif"]];
@@ -63,14 +102,22 @@
     
     [self.interface getAlbumListByPageNum:_pageNum];
     
-    self.adView.delegate = self;
+//    self.adView.delegate = self;
+//    
+//    [self.adView startAnimating];
+//    
+//    self.adView.userInteractionEnabled = YES;
+//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(adImageViewTapAction:)];
+//    [self.adView addGestureRecognizer:tap];
+//    [tap release];
     
-    [self.adView startAnimating];
-    
-    self.adView.userInteractionEnabled = YES;
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(adImageViewTapAction:)];
-    [self.adView addGestureRecognizer:tap];
-    [tap release];
+    [self showAutoPlay];
+}
+
+-(void)showAutoPlay
+{
+    [self.cycleScrollView showNextPage];
+    [self performSelector:@selector(showAutoPlay) withObject:nil afterDelay:3];
 }
 
 -(void)adImageViewTapAction:(UIGestureRecognizer *)gesture
@@ -113,7 +160,19 @@
     
     self.detailsScrollView = nil;
     
-    self.adView = nil;
+//    self.adView = nil;
+    
+    self.adInterface.delegate = nil;
+    self.adInterface = nil;
+    
+    self.adArray = nil;
+    
+    self.headerScrollViewArray = nil;
+    
+    self.cycleScrollView = nil;
+    
+    self.adTitleGroupView = nil;
+    self.adTitleLabel = nil;
     
     [super dealloc];
 }
@@ -203,7 +262,7 @@
                                                                   owner:self
                                                                 options:nil] objectAtIndex:0];
             
-            albumView.frame = CGRectMake( offsetW 
+            albumView.frame = CGRectMake( 10+offsetW
                                          ,offsetH
                                          , albumView.frame.size.width
                                          , albumView.frame.size.height);
@@ -294,6 +353,126 @@
     }
     
     return [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ad2" ofType:@"png"]];
+}
+
+#pragma mark - CycleScrollViewDelegate method
+- (void)cycleScrollViewDelegate:(CycleScrollView *)cycleScrollView didScrollView:(int)index
+{
+    if (index > self.adArray.count)
+        return;
+
+    ADModel *ad = [self.adArray objectAtIndex:index-1];
+    self.adTitleLabel.text = ad.title;
+    
+    
+    
+//    if (self.currPageNum != (index - 1)) {
+//        self.currPageNum = (index -1);
+//        
+//        //    self.slideShowPageControl.currentPage = index-1;
+//        [UIView animateWithDuration:0.1
+//                              delay:0
+//                            options:UIViewAnimationOptionBeginFromCurrentState
+//         | UIViewAnimationCurveEaseInOut
+//                         animations:^{
+//                             self.slideShowTitleLabel.alpha = 0;
+//                         } completion:^(BOOL finished) {
+//                             
+//                             if (finished) {
+//                                 [UIView animateWithDuration:0.1
+//                                                       delay:0
+//                                                     options:UIViewAnimationOptionBeginFromCurrentState
+//                                  | UIViewAnimationCurveEaseInOut
+//                                                  animations:^{
+//                                                      self.slideShowTitleLabel.text
+//                                                      = [[self.taobaokeItemArray objectAtIndex:index-1] title];
+//                                                      self.slideShowTitleLabel.alpha = 1;
+//                                                  } completion:nil];
+//                             }
+//                             
+//                         }];
+//    }
+    
+}
+
+#pragma mark - ADInterfaceDelegate <NSObject>
+
+-(void)getADListDidFinished:(NSArray *)result
+{
+    self.adArray = result;
+    
+    for (NSInteger idx = 0; idx < result.count; idx++) {
+        
+        ADModel *ad = [result objectAtIndex:idx];
+        
+        EGOImageView *imageView = [[[EGOImageView alloc]
+                                   initWithFrame:CGRectMake(0,0
+                                                            , 1024
+                                                            , 360)] autorelease];
+        imageView.tag = idx;
+        
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        imageView.imageURL = [NSURL URLWithString:ad.picUrl];
+        imageView.userInteractionEnabled = YES;
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                              action:@selector(adTappedAction:)];
+        [imageView addGestureRecognizer:tap];
+        [tap release];
+        
+        [self.headerScrollViewArray addObject:imageView];
+        
+    }
+    
+    self.cycleScrollView = [[[CycleScrollView alloc]
+                             initWithFrame:CGRectMake(0, 0, 1024, 360)
+                             cycleDirection:CycleDirectionLandscape
+                             views:self.headerScrollViewArray] autorelease];
+    self.cycleScrollView.delegate = self;
+    
+    [self.mScrollView insertSubview:self.cycleScrollView belowSubview:self.adTitleGroupView];
+    
+    
+    
+}
+
+-(void)getADListDidFailed:(NSString *)errorMsg
+{
+    NSLog(@"--------%@",errorMsg);
+}
+
+#pragma mark - Gesture
+-(void)adTappedAction:(UIGestureRecognizer *)gesture
+{
+    ADModel *ad = [self.adArray objectAtIndex:gesture.view.tag];
+    
+    PicDetailViewController *picDetailViewController = nil;
+    
+    switch (ad.adType) {
+        case 0://普通广告，直接跳转到图片详细页
+            
+            picDetailViewController = [[PicDetailViewController alloc] initWithNibName:@"PicDetailViewController"
+                                                                                     bundle:nil];
+            
+            picDetailViewController.navTitle = ad.title;
+            picDetailViewController.pid = ad.adIdentifier;
+            
+            [self.navigationController pushViewController:picDetailViewController animated:YES];
+            [picDetailViewController release];
+
+            
+            break;
+            
+        case 1://网页广告，直接打开网页
+            
+            break;
+            
+        default:
+            break;
+    }
+    
+    
+    
 }
 
 @end

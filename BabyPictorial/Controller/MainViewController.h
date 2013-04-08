@@ -14,13 +14,21 @@
 @class JSAnimatedImagesView;
 @protocol JSAnimatedImagesViewDelegate;
 
+@class CycleScrollView;
+@protocol CycleScrollViewDelegate;
+
+@protocol ADInterfaceDelegate;
+
 @interface MainViewController : UIViewController <UIScrollViewDelegate
-,MainPageInterfaceDelegate,JSAnimatedImagesViewDelegate>
+,MainPageInterfaceDelegate,JSAnimatedImagesViewDelegate,CycleScrollViewDelegate,ADInterfaceDelegate>
 
 @property (retain,nonatomic) IBOutlet UIScrollView *mScrollView;
 
 @property (retain,nonatomic) IBOutlet UIScrollView *detailsScrollView;
 
-@property (retain,nonatomic) IBOutlet JSAnimatedImagesView *adView;
+//@property (retain,nonatomic) IBOutlet JSAnimatedImagesView *adView;
+
+
+@property (nonatomic,retain) CycleScrollView *cycleScrollView;
 
 @end

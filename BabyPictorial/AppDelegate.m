@@ -37,6 +37,8 @@
     
     
 //    [self.navController setNavigationBarHidden:YES];
+    [self.navController.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bg.png"]
+                                           forBarMetrics:UIBarMetricsDefault];
     
     
     if ( [[UIDevice currentDevice].systemVersion floatValue] < 6.0)
