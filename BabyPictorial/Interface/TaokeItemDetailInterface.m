@@ -44,17 +44,19 @@
 //          &fields=click_url
 //          &outer_code=baby
     
+    if (num_iid && num_iid.length > 0) {
     
-    NSString *urlStr = [NSString stringWithFormat:@"http://gw.api.taobao.com/router/rest?method=taobao.taobaoke.items.detail.get&num_iids=%@&fields=click_url&outer_code=%@",num_iid,@"baby"];
-    
-    urlStr = [TaobaoUrlSignGenerateUtil dealUrl2TaobaoStyle:urlStr];
-    
-    NSURL *url = [NSURL URLWithString:urlStr];
-    self.request = [ASIHTTPRequest requestWithURL:url];
-    [self.request setTimeOutSeconds:15];
-    
-    [self.request setDelegate:self];
-    [self.request startAsynchronous];
+        NSString *urlStr = [NSString stringWithFormat:@"http://gw.api.taobao.com/router/rest?method=taobao.taobaoke.items.detail.get&num_iids=%@&fields=click_url&outer_code=%@",num_iid,@"baby"];
+        
+        urlStr = [TaobaoUrlSignGenerateUtil dealUrl2TaobaoStyle:urlStr];
+        
+        NSURL *url = [NSURL URLWithString:urlStr];
+        self.request = [ASIHTTPRequest requestWithURL:url];
+        [self.request setTimeOutSeconds:15];
+        
+        [self.request setDelegate:self];
+        [self.request startAsynchronous];
+    }
 }
 
 
