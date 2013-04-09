@@ -87,6 +87,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    self.descriptionLabel.text = self.picDescTitle;
+    
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.gif"]];
     
     self.interface = [[[PicDetailInterface alloc] init] autorelease];
@@ -214,6 +216,8 @@
 
 -(void)dealloc
 {
+    self.picDescTitle = nil;
+    
     self.taokeItemDetailInterface.delegate = nil;
     self.taokeItemDetailInterface = nil;
     

@@ -29,7 +29,8 @@
 //    "picModelInAlbum": [
 //                        {
 //                            "pic_path": "http://img04.taobaocdn.com/imgextra/i4/15167020618926233/T1NHdNXsdeXXXXXXXX_!!862605167-0-pix.jpg",
-//                            "pid": "64852851"
+//                            "pid": "64852851",
+//                            "pic_desc": "adsfsdfdsfdsf"
 //                        },
 //                        ...
 //                        ],
@@ -56,16 +57,15 @@
 //                           "picDetail": [
 //                                         {
 //                                             "pic_path": "http://img04.taobaocdn.com/imgextra/i4/15614020857430971/T17itQXuhgXXXXXXXX_!!75105614-0-pix.jpg",
-//                                             "pid": "65981475"
+//                                             "pid": "65981475",
+//                                             "pic_desc": "adsfsdfdsfdsf"
 //                                         },
 //                                         {
 //                                             "pic_path": "http://img04.taobaocdn.com/imgextra/i4/15614022774199508/T1WGVGXzpgXXXXXXXX_!!75105614-0-pix.jpg",
-//                                             "pid": "65984407"
+//                                             "pid": "65984407",
+//                                             "pic_desc": "adsfsdfdsfdsf"
 //                                         },
-//                                         {
-//                                             "pic_path": "http://img01.taobaocdn.com/imgextra/i1/15614020848655158/T1S.8QXDFfXXXXXXXX_!!75105614-0-pix.jpg",
-//                                             "pid": "65981465"
-//                                         }
+//                                         ...
 //                                         ]
 //                       },
 //                       ...
@@ -120,6 +120,7 @@
                     
                     pdm.pid = [dict objectForKey:@"pid"];
                     pdm.picUrl = [dict objectForKey:@"pic_path"];
+                    pdm.descTitle = [dict objectForKey:@"pic_desc"];
                     
                     [am.picArray addObject:pdm];
                     
@@ -145,6 +146,7 @@
                 
                 pdm.pid = [dict objectForKey:@"pid"];
                 pdm.picUrl = [dict objectForKey:@"pic_path"];
+                pdm.descTitle = [dict objectForKey:@"pic_desc"];
                 
                 [am.picArray addObject:pdm];
                 

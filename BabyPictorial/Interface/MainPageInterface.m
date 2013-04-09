@@ -30,28 +30,15 @@
 //     "picDetail": [
 //                   {
 //                       "pic_path": "http://img04.taobaocdn.com/imgextra/i4/19018020515306883/T1IV0LXwRdXXXXXXXX_!!653669018-0-pix.jpg",
-//                       "pid": "64309213"
+//                       "pid": "64309213",
+//                       "pic_desc": "asdasdasdasdas"
 //                   },
 //                   {
 //                       "pic_path": "http://img04.taobaocdn.com/imgextra/i4/19018022429115540/T1VKtLXtlcXXXXXXXX_!!653669018-0-pix.jpg",
 //                       "pid": "64311601"
+//                       "pic_desc": "asdasdasdasdas"
 //                   },
-//                   {
-//                       "pic_path": "http://img01.taobaocdn.com/imgextra/i1/19018020503946253/T1S7XLXA8aXXXXXXXX_!!653669018-0-pix.jpg",
-//                       "pid": "64309212"
-//                   },
-//                   {
-//                       "pic_path": "http://img03.taobaocdn.com/imgextra/i3/19018020503818499/T1uQFKXBVeXXXXXXXX_!!653669018-0-pix.jpg",
-//                       "pid": "64308814"
-//                   },
-//                   {
-//                       "pic_path": "http://img02.taobaocdn.com/imgextra/i2/19018020506243109/T13KNKXsJgXXXXXXXX_!!653669018-0-pix.jpg",
-//                       "pid": "64302881"
-//                   },
-//                   {
-//                       "pic_path": "http://img02.taobaocdn.com/imgextra/i2/19018020511649004/T1ZBBLXyJbXXXXXXXX_!!653669018-0-pix.jpg",
-//                       "pid": "64302879"
-//                   }
+//                   ...
 //                   ]
 // },
 //...
@@ -79,6 +66,7 @@
                     
                     pdm.pid = [dict objectForKey:@"pid"];
                     pdm.picUrl = [dict objectForKey:@"pic_path"];
+                    pdm.descTitle = [dict objectForKey:@"pic_desc"];
 
                     [am.picArray addObject:pdm];
                     

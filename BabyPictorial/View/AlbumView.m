@@ -138,6 +138,7 @@
     PicDetailViewController *col = [[PicDetailViewController alloc] initWithNibName:@"PicDetailViewController"
                                                                              bundle:nil];
     
+    col.picDescTitle = [[self.albumModel.picArray objectAtIndex:idx] descTitle];
     col.navTitle = self.albumModel.albumName;
     col.pid = [[self.albumModel.picArray objectAtIndex:idx] pid];
     col.smallPicUrl = ((EGOImageView *)gesture.view).imageURL;

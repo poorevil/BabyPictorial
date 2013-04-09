@@ -111,6 +111,7 @@
     col.navTitle = self.pdm.albumName;
     col.pid = self.pdm.pid;
     col.smallPicUrl = self.imageView.imageURL;
+    col.picDescTitle = self.pdm.descTitle;
     
     AppDelegate *mainDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
     [mainDelegate.navController pushViewController:col animated:YES];

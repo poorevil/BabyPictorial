@@ -456,6 +456,7 @@
             
             picDetailViewController.navTitle = ad.title;
             picDetailViewController.pid = ad.adIdentifier;
+            picDetailViewController.picDescTitle = ad.title;
             
             [self.navigationController pushViewController:picDetailViewController animated:YES];
             [picDetailViewController release];

@@ -36,6 +36,7 @@
 @property (nonatomic,retain) NSURL *smallPicUrl;//小图标url地址
 
 @property (nonatomic,retain) NSString *navTitle;
+@property (nonatomic,retain) NSString *picDescTitle;
 
 @property (nonatomic,retain) PicDetailModel *pdm;
 
