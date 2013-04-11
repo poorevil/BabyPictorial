@@ -111,7 +111,7 @@
     col.navTitle = self.albumModel.albumName;
     col.pid = [[self.albumModel.picArray objectAtIndex:idx] pid];
     col.smallPicUrl = ((EGOImageView *)gesture.view).imageURL;
-    col.picDescTitle = [[self.albumModel.picArray objectAtIndex:idx] picDescTitle];
+    col.picDescTitle = [[self.albumModel.picArray objectAtIndex:idx] descTitle];
 
     AppDelegate *mainDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
 

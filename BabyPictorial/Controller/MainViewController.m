@@ -28,6 +28,8 @@
 
 #import "ADModel.h"
 
+#import "SVWebViewController.h"
+
 @interface MainViewController (){
     NSInteger _pageNum ;
     Boolean _hasNext;
@@ -466,14 +468,19 @@
             
         case 1://网页广告，直接打开网页
             
+            [self.navigationController
+             pushViewController:[[[SVWebViewController alloc] initWithURL:[NSURL URLWithString:ad.adIdentifier]
+                                                               thumbImage:nil
+                                                                    title:ad.title]
+                                 autorelease]
+             animated:YES];
+            
+            
             break;
             
         default:
             break;
     }
-    
-    
-    
 }
 
 @end
