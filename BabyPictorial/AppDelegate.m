@@ -22,14 +22,45 @@
     [super dealloc];
 }
 
+//版本更新通知
+-(void)updateApp
+{
+    NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+    NSString *nowVersion = [infoDict objectForKey:@"CFBundleVersion"];
+    
+    NSURL *url = [NSURL URLWithString:APPIDURL];
+    NSString * fileStr =  [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
+    NSRange substr = [fileStr rangeOfString:@"\"version\":\""];
+    NSRange substr2 =[fileStr rangeOfString:@"\""
+                                    options:NULL
+                                      range:NSMakeRange(substr.location + substr.length, 10) ];
+    
+    NSRange range = {substr.location + substr.length, substr2.location - substr.location - substr.length};
+    NSString *newVersion =[fileStr substringWithRange:range];
+    if([nowVersion floatValue] < [newVersion floatValue])
+    {
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"版本更新"
+                                                       message:@"亲，最新版本更加精彩！"
+                                                      delegate:self
+                                             cancelButtonTitle:@"取消"
+                                             otherButtonTitles:@"更新", nil];
+        alert.tag = 110;
+        [alert show];
+        
+    }
+}
+
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
     
     [MobClick startWithAppkey:YOUMENG_APP_KEY reportPolicy:REALTIME channelId:nil];
-    //检查更新
-    [MobClick checkUpdate];
+//    //检查更新
+//    [MobClick checkUpdate];
+    
+    [self updateApp];
     
     self.navController = [[UINavigationController alloc]
                           initWithRootViewController:[[[MainViewController alloc] initWithNibName:@"MainViewController"
@@ -83,6 +114,15 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    
+    if (buttonIndex == 1) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:APPURL]];
+    }
 }
 
 @end

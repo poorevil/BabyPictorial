@@ -23,4 +23,6 @@
 
 -(void)reloadSubViewsImage;
 
+-(void)setCurrentPicId:(NSString *)picId;
+
 @end

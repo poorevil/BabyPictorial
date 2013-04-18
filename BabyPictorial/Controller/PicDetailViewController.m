@@ -25,6 +25,8 @@
 
 #import "TaokeItemDetailInterface.h"
 
+#import "MobClick.h"
+
 #import "SVWebViewController.h"
 
 @interface PicDetailViewController ()
@@ -268,6 +270,7 @@
                                  , albumView.frame.size.height);
     
     albumView.albumModel = pdm.ownerAlbum;
+    [albumView setCurrentPicId:self.pdm.pid];
     
     [self.detailContainer addSubview:albumView];
     
@@ -403,6 +406,10 @@
 
 -(void)buyBtnAction:(id)sender
 {
+    
+    //友盟统计
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:self.pdm.pid,@"pid", nil];
+    [MobClick event:@"buy_btn" attributes:dict];
     
     NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"%@&ttid=400000_21125417@txx_iPhone_0.0.0"
                                        , self.pdm.taokeUrl]];

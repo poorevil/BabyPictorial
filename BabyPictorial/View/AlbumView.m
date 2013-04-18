@@ -37,6 +37,40 @@
     self.layer.borderWidth = 1;
 }
 
+//设置当前图片id
+-(void)setCurrentPicId:(NSString *)picId
+{
+    for (NSInteger idx = 0 ; idx < self.albumModel.picArray.count ; idx++) {
+        PicDetailModel *pdm = [self.albumModel.picArray objectAtIndex:idx];
+        
+        if (![picId isEqualToString:pdm.pid]) {
+            
+            UIView *view = [self.imageContener viewWithTag:idx+10];
+            if ([view isMemberOfClass:[EGOImageView class]]) {
+
+                CALayer *coverLayer = [CALayer layer];
+                coverLayer.backgroundColor = [UIColor colorWithRed:0
+                                                             green:0
+                                                              blue:0
+                                                             alpha:0.3].CGColor;
+                
+                coverLayer.frame = CGRectMake(0, 0, view.frame.size.width
+                                              , view.frame.size.height);
+                
+                if ([coverLayer respondsToSelector:@selector(setContentsScale:)])
+                {
+                    coverLayer.contentsScale = [[UIScreen mainScreen] scale];
+                }
+                
+                [view.layer addSublayer:coverLayer];
+            }
+            
+        }
+        
+    }
+    
+}
+
 -(void)setAlbumModel:(AlbumModel *)albumModel
 {
     [_albumModel release];
@@ -69,7 +103,7 @@
         EGOImageView *image = [[EGOImageView alloc] initWithFrame:frame];
         image.contentMode = UIViewContentModeScaleAspectFit;
         image.clipsToBounds = YES;
-        image.tag = idx;
+        image.tag = idx+10;
         
         image.layer.borderColor = [UIColor colorWithWhite:0.9 alpha:0.9].CGColor;
         image.layer.borderWidth = 1;
@@ -119,8 +153,6 @@
 
 -(void)dealloc
 {
-    
-//    self.urlArray = nil;
     self.albumModel = nil;
     self.titleLabel = nil;
     self.imageContener = nil;
@@ -133,7 +165,7 @@
 -(void)tapAction:(UITapGestureRecognizer *)gesture
 {
     
-    NSInteger idx = gesture.view.tag;
+    NSInteger idx = gesture.view.tag - 10;
     
     PicDetailViewController *col = [[PicDetailViewController alloc] initWithNibName:@"PicDetailViewController"
                                                                              bundle:nil];

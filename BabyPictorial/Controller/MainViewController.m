@@ -28,6 +28,8 @@
 
 #import "ADModel.h"
 
+#import "MobClick.h"
+
 #import "SVWebViewController.h"
 
 @interface MainViewController (){
@@ -449,6 +451,13 @@
     ADModel *ad = [self.adArray objectAtIndex:gesture.view.tag];
     
     PicDetailViewController *picDetailViewController = nil;
+    
+    //友盟统计
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
+                          [NSString stringWithFormat:@"%d",gesture.view.tag + 1],@"ad_seat",
+                          ad.title, @"ad_title", nil];
+    [MobClick event:@"ad" attributes:dict];
+    
     
     switch (ad.adType) {
         case 0://普通广告，直接跳转到图片详细页
