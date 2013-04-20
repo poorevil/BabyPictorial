@@ -141,7 +141,7 @@
         if ([view isMemberOfClass:[EGOImageView class]]) {
             EGOImageView *imageView = (EGOImageView *)view;
             
-            PicDetailModel *pdm = [self.albumModel.picArray objectAtIndex:view.tag];
+            PicDetailModel *pdm = [self.albumModel.picArray objectAtIndex:view.tag - 10];
             
             NSString *url = [NSString stringWithFormat:@"%@_100x100.jpg",pdm.picUrl];
             

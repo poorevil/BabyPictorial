@@ -138,10 +138,12 @@
     EGOImageView *tmpImg = [[[EGOImageView alloc] init] autorelease];
     tmpImg.imageURL = self.smallPicUrl;
     
-    self.smallPicUrl = nil;
+//    self.smallPicUrl = nil;
     
     self.imageView.placeholderImage = tmpImg.image;
-    self.imageView.imageURL = nil;
+    self.imageView.imageURL = [NSURL URLWithString:[[self.smallPicUrl absoluteString]
+                                                    stringByReplacingOccurrencesOfString:@"_100x100.jpg"
+                                                                              withString:@""]];
     
     if (self.imageView.image)
         [self imageViewLoadedImage:self.imageView];
