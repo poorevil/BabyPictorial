@@ -29,6 +29,8 @@
 
 #import "SVWebViewController.h"
 
+#import "MBProgressHUD.h"
+
 @interface PicDetailViewController ()
 
 @property (nonatomic,retain) PicDetailInterface *interface;
@@ -249,6 +251,146 @@
     [super dealloc];
 }
 
+#pragma mark - Gesture 
+-(void)initGesture
+{
+    UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self
+                                                                                action:@selector(swipeGestureAction:)];
+    
+    self.rightContainer.userInteractionEnabled = YES;
+    [self.rightContainer addGestureRecognizer:swipe];
+    [swipe release];
+    
+    swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self
+                                                                                action:@selector(swipeGestureAction:)];
+    
+    swipe.direction = UISwipeGestureRecognizerDirectionLeft;
+    self.rightContainer.userInteractionEnabled = YES;
+    [self.rightContainer addGestureRecognizer:swipe];
+    [swipe release];
+}
+
+-(void)swipeGestureAction:(UISwipeGestureRecognizer *)gesture
+{
+    NSInteger currentIdx = 0;//当前位置
+    
+    for (NSInteger idx = 0 ; idx < self.pdm.ownerAlbum.picArray.count; idx++) {
+        
+        PicDetailModel *pdmTmp = [self.pdm.ownerAlbum.picArray objectAtIndex:idx];
+        if ([self.pdm.pid isEqualToString:pdmTmp.pid]) {
+            currentIdx = idx;
+        }
+    }
+    
+    switch (gesture.direction) {
+        case UISwipeGestureRecognizerDirectionLeft://向左
+            
+            if (currentIdx < self.pdm.ownerAlbum.picArray.count - 1) {
+                
+                PicDetailViewController *col = [[PicDetailViewController alloc] initWithNibName:@"PicDetailViewController"
+                                                                                         bundle:nil];
+                
+                PicDetailModel *pdmTmp = [self.pdm.ownerAlbum.picArray objectAtIndex:currentIdx+1];
+                
+                col.picDescTitle = pdmTmp.descTitle;
+                col.navTitle = self.pdm.ownerAlbum.albumName;
+                col.pid = pdmTmp.pid;
+                col.smallPicUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@_100x100.jpg",pdmTmp.picUrl]];
+                
+                [self.navigationController pushViewController:col animated:YES];
+                [col release];
+            }else{
+                MBProgressHUD *hud = [[[MBProgressHUD alloc] initWithView:self.view] autorelease];
+                hud.labelText = @"孩儿他妈，已经到最后一页啦！";
+                
+                hud.customView = [[[UIView alloc] init] autorelease];
+                hud.mode = MBProgressHUDModeCustomView;
+                
+                [self.view addSubview:hud];
+                [self.view bringSubviewToFront:hud];
+                
+                [hud show:NO];
+                
+                Boolean showFlag = YES;
+                NSTimeInterval begin = [[NSDate date] timeIntervalSince1970];
+                
+                while (showFlag) {
+                    
+                    if ([[NSDate date] timeIntervalSince1970] - begin > 1.5) {
+                        showFlag = NO;
+                    }
+                    
+                    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate distantPast]];
+                }
+                [hud hide:YES];
+                
+                [hud removeFromSuperview];
+            }
+            
+            
+            break;
+        case UISwipeGestureRecognizerDirectionRight://向右
+            
+            if (currentIdx >0) {
+                
+                PicDetailViewController *col = [[PicDetailViewController alloc] initWithNibName:@"PicDetailViewController"
+                                                                                         bundle:nil];
+                
+                PicDetailModel *pdmTmp = [self.pdm.ownerAlbum.picArray objectAtIndex:currentIdx-1];
+                
+                col.picDescTitle = pdmTmp.descTitle;
+                col.navTitle = self.pdm.ownerAlbum.albumName;
+                col.pid = pdmTmp.pid;
+                col.smallPicUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@_100x100.jpg",pdmTmp.picUrl]];
+                
+                CATransition* transition = [CATransition animation];
+                transition.duration = 0.3;
+                transition.type = kCATransitionPush;
+                transition.subtype = kCATransitionFromTop;
+                
+                [self.navigationController.view.layer
+                 addAnimation:transition forKey:kCATransition];
+                
+                [self.navigationController pushViewController:col animated:NO];
+                
+                [col release];
+            }else{
+                MBProgressHUD *hud = [[[MBProgressHUD alloc] initWithView:self.view] autorelease];
+                hud.labelText = @"孩儿他妈，已经是第一页啦！";
+                
+                hud.customView = [[[UIView alloc] init] autorelease];
+                hud.mode = MBProgressHUDModeCustomView;
+                
+                [self.view addSubview:hud];
+                [self.view bringSubviewToFront:hud];
+                
+                [hud show:NO];
+                
+                Boolean showFlag = YES;
+                NSTimeInterval begin = [[NSDate date] timeIntervalSince1970];
+                
+                while (showFlag) {
+                    
+                    if ([[NSDate date] timeIntervalSince1970] - begin > 1.5) {
+                        showFlag = NO;
+                    }
+                    
+                    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate distantPast]];
+                }
+                [hud hide:YES];
+                
+                [hud removeFromSuperview];
+            }
+            
+            
+            break;
+            
+        default:
+            break;
+    }
+}
+
+
 #pragma mark - PicDetailInterfaceDelegate
 
 -(void)getPicDetailDidFinished:(PicDetailModel *)pdm
@@ -328,6 +470,8 @@
     self.taokeItemDetailInterface.delegate = self;
     [self.taokeItemDetailInterface getTaokeItemDetailsByNumiid:self.pdm.taokeNumiid];
     
+    
+    [self initGesture];
 }
 
 -(void)getPicDetailDidFailed:(NSString *)errorMsg
