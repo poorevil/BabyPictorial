@@ -16,6 +16,9 @@
 
 @property (nonatomic,retain) NSString *appKey;
 @property (nonatomic,retain) NSString *appSecret;
+
+@property (nonatomic,retain) NSString *taokeName;//淘客账户名称，用于生成淘客链接
+
 @property (nonatomic,retain) NSArray *itemcatsArray;//查询页面-高级搜索-分类列表
 
 @property (nonatomic,retain) NSArray *categoryRecommendArray;//类目推荐数组

@@ -9,14 +9,27 @@
 #import "AppDelegate.h"
 
 #import "MainViewController.h"
+#import "MainViewViewController4Phone.h"
 
 #import "MobClick.h"
+
+#import "UINavigationController+OrientationControl.h"
+
+#import "RuntimeParamInterface.h"
+
+@interface AppDelegate()
+
+@property (nonatomic,retain) RuntimeParamInterface *interface ;
+
+@end
 
 @implementation AppDelegate
 
 - (void)dealloc
 {
     self.navController = nil;
+    
+    self.interface = nil;
     
     [_window release];
     [super dealloc];
@@ -62,14 +75,26 @@
     
     [self updateApp];
     
-    self.navController = [[UINavigationController alloc]
-                          initWithRootViewController:[[[MainViewController alloc] initWithNibName:@"MainViewController"
-                                                                                           bundle:nil] autorelease]];
+    UIViewController *control ;
+    
+    if (IDIOM == IPAD) {
+        control = [[[MainViewController alloc] initWithNibName:@"MainViewController"
+                                                        bundle:nil] autorelease];
+    }else{
+        control = [[[MainViewViewController4Phone alloc] initWithNibName:@"MainViewViewController4Phone"
+                                                                  bundle:nil] autorelease];
+    }
+    
+    self.navController = [[UINavigationController alloc] initWithRootViewController:control];
     
     
 //    [self.navController setNavigationBarHidden:YES];
     [self.navController.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bg.png"]
                                            forBarMetrics:UIBarMetricsDefault];
+    
+    //获取运行时参数
+    self.interface = [[[RuntimeParamInterface alloc] init] autorelease];
+    [self.interface getParam];
     
     
     if ( [[UIDevice currentDevice].systemVersion floatValue] < 6.0)

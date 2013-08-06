@@ -16,7 +16,7 @@
 
 -(void)getAlbumListByPageNum:(NSInteger)pageNum
 {
-    self.interfaceUrl = [NSString stringWithFormat:@"http://pic.taoxiaoxian.com/interface/recommend_album?p=%d&cid=9",pageNum];
+    self.interfaceUrl = [NSString stringWithFormat:@"http://vps.taoxiaoxian.com/interface/recommend_album?p=%d&cid=9",pageNum];
     self.baseDelegate = self;
     
     [self connect];

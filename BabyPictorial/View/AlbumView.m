@@ -17,6 +17,9 @@
 #import "AlbumModel.h"
 
 #import "WaterflowViewController.h"
+#import "WaterflowViewController4Phone.h"
+
+#import "PicDetailViewController4Phone.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -92,6 +95,9 @@
 
 -(void)setImageUrls:(NSArray *)urlArray
 {
+    for (UIView *view in self.imageContener.subviews) {
+        [view removeFromSuperview];
+    }
     
     for (NSInteger idx = 0 ; idx < urlArray.count ; idx++) {
         PicDetailModel *pdm = [urlArray objectAtIndex:idx];
@@ -164,36 +170,68 @@
 
 -(void)tapAction:(UITapGestureRecognizer *)gesture
 {
-    
     NSInteger idx = gesture.view.tag - 10;
     
-    PicDetailViewController *col = [[PicDetailViewController alloc] initWithNibName:@"PicDetailViewController"
-                                                                             bundle:nil];
+    if (IDIOM == IPAD) {
+        
+        PicDetailViewController *col = [[PicDetailViewController alloc] initWithNibName:@"PicDetailViewController"
+                                                                                 bundle:nil];
+        
+        col.picDescTitle = [[self.albumModel.picArray objectAtIndex:idx] descTitle];
+        col.navTitle = self.albumModel.albumName;
+        col.pid = [[self.albumModel.picArray objectAtIndex:idx] pid];
+        col.smallPicUrl = ((EGOImageView *)gesture.view).imageURL;
+        
+        
+        AppDelegate *mainDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
+        [mainDelegate.navController pushViewController:col animated:YES];
+        [col release];
+        
+    }else{
     
-    col.picDescTitle = [[self.albumModel.picArray objectAtIndex:idx] descTitle];
-    col.navTitle = self.albumModel.albumName;
-    col.pid = [[self.albumModel.picArray objectAtIndex:idx] pid];
-    col.smallPicUrl = ((EGOImageView *)gesture.view).imageURL;
-    
-    
-    AppDelegate *mainDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
-    [mainDelegate.navController pushViewController:col animated:YES];
-    [col release];
+        PicDetailViewController4Phone *col = [[PicDetailViewController4Phone alloc]
+                                              initWithNibName:@"PicDetailViewController4Phone"
+                                              bundle:nil];
+        
+        col.navTitle = self.albumModel.albumName;
+        col.pid = [[self.albumModel.picArray objectAtIndex:idx] pid];
+        col.smallPicUrl = ((EGOImageView *)gesture.view).imageURL;
+        col.picDescTitle = [[self.albumModel.picArray objectAtIndex:idx] descTitle];
+        
+        AppDelegate *mainDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
+        [mainDelegate.navController pushViewController:col animated:YES];
+        [col release];
+    }
     
 }
 
 -(void)albumTapAction:(UITapGestureRecognizer *)gesture
 {
-    WaterflowViewController *col = [[WaterflowViewController alloc] initWithNibName:@"WaterflowViewController"
-//                                                                            albumId:self.albumModel.albumId
-                                                                             bundle:nil];
-    col.albumId = self.albumModel.albumId;
-    col.albumName = self.albumModel.albumName;
+    if (IDIOM == IPAD) {
     
-    AppDelegate *mainDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
-    [mainDelegate.navController pushViewController:col animated:YES];
-    
-    [col release];
+        WaterflowViewController *col = [[WaterflowViewController alloc] initWithNibName:@"WaterflowViewController"
+    //                                                                            albumId:self.albumModel.albumId
+                                                                                 bundle:nil];
+        col.albumId = self.albumModel.albumId;
+        col.albumName = self.albumModel.albumName;
+        
+        AppDelegate *mainDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
+        [mainDelegate.navController pushViewController:col animated:YES];
+        
+        [col release];
+        
+    }else{
+        WaterflowViewController4Phone *col = [[WaterflowViewController4Phone alloc]
+                                              initWithNibName:@"WaterflowViewController4Phone"
+                                              bundle:nil];
+        col.albumId = self.albumModel.albumId;
+        col.albumName = self.albumModel.albumName;
+        
+        AppDelegate *mainDelegate = (AppDelegate*)[[UIApplication sharedApplication]delegate];
+        [mainDelegate.navController pushViewController:col animated:YES];
+        
+        [col release];
+    }
     
 }
 

@@ -49,7 +49,7 @@
     self.imageView.frame = CGRectMake(5
                                       , 5
                                       , self.imageView.frame.size.width
-                                      , pdm.height);
+                                      , 220);//, pdm.height);
     
     //点击事件
     UITapGestureRecognizer *singleTap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onTileTaped:)];

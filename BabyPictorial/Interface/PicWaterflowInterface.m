@@ -16,7 +16,7 @@
 
 -(void)getPicWaterflowByPageNum:(NSInteger)pageNum andAlbumId:(NSString *)albumId
 {
-    NSString *url = [NSString stringWithFormat:@"http://pic.taoxiaoxian.com/interface/picwaterflow?p=%d&cid=9",pageNum];
+    NSString *url = [NSString stringWithFormat:@"http://vps.taoxiaoxian.com/interface/picwaterflow?p=%d&cid=9",pageNum];
     
     if (albumId) {
         url = [NSString stringWithFormat:@"%@&albumId=%@",url,albumId];

@@ -155,6 +155,30 @@
     [super dealloc];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    if (IDIOM == IPAD){
+        
+        if (toInterfaceOrientation == UIInterfaceOrientationPortrait
+            || toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+            
+            return NO;
+        }
+        
+        return YES;
+        
+    }else{
+        
+        if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft
+            || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+            
+            return NO;
+        }
+        
+        return YES;
+    }
+}
+
 #pragma mark - addTileWithArticle
 //添加tile
 -(void)addTileWithResults:(NSArray *) resultArray {

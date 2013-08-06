@@ -51,6 +51,16 @@
 
 @end
 
+#define CYCLE_SCROLLVIEW_HEIGHT_PAD 360
+#define CYCLE_SCROLLVIEW_HEIGHT_PHONE 120
+
+#define CYCLE_SCROLLVIEW_HEIGHT (IDIOM == IPAD?CYCLE_SCROLLVIEW_HEIGHT_PAD:CYCLE_SCROLLVIEW_HEIGHT_PHONE)
+
+#define AD_TITLE_GROUP_HEIGHT_PAD 50
+#define AD_TITLE_GROUP_HEIGHT_PHONE 30
+
+#define AD_TITLE_GROUP_HEIGHT (IDIOM == IPAD?AD_TITLE_GROUP_HEIGHT_PAD:AD_TITLE_GROUP_HEIGHT_PHONE)
+
 @implementation MainViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -69,13 +79,18 @@
     
     self.headerScrollViewArray = [NSMutableArray array];
     
-    self.adTitleGroupView = [[[UIView alloc] initWithFrame:CGRectMake(0, 310, 1024, 50)] autorelease];
+    self.adTitleGroupView = [[[UIView alloc] initWithFrame:CGRectMake(0
+                                                                      , CYCLE_SCROLLVIEW_HEIGHT - AD_TITLE_GROUP_HEIGHT
+                                                                      , self.view.frame.size.width
+                                                                      , AD_TITLE_GROUP_HEIGHT)] autorelease];
     self.adTitleGroupView.backgroundColor = [UIColor colorWithRed:0
                                                        green:0
                                                         blue:0
                                                        alpha:0.7];
     
-    self.adTitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(20, 0, 1004, 50)] autorelease];
+    self.adTitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(20, 0
+                                                                   , self.view.frame.size.width-20
+                                                                   , AD_TITLE_GROUP_HEIGHT)] autorelease];
     [self.adTitleGroupView addSubview:self.adTitleLabel];
     self.adTitleLabel.backgroundColor = [UIColor clearColor];
     self.adTitleLabel.textColor = [UIColor whiteColor];
@@ -93,7 +108,8 @@
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bg.gif"]];
     
-    self.mScrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height+264);
+    self.mScrollView.contentSize = CGSizeMake(self.view.frame.size.width
+                                              , IDIOM == IPAD?self.view.frame.size.height+264:self.view.frame.size.height);
     
     self.detailsScrollView.contentSize = CGSizeMake(0, 0);
     
@@ -106,22 +122,13 @@
     
     [self.interface getAlbumListByPageNum:_pageNum];
     
-//    self.adView.delegate = self;
-//    
-//    [self.adView startAnimating];
-//    
-//    self.adView.userInteractionEnabled = YES;
-//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(adImageViewTapAction:)];
-//    [self.adView addGestureRecognizer:tap];
-//    [tap release];
-    
     [self showAutoPlay];
 }
 
 -(void)showAutoPlay
 {
     [self.cycleScrollView showNextPage];
-    [self performSelector:@selector(showAutoPlay) withObject:nil afterDelay:5];
+    [self performSelector:@selector(showAutoPlay) withObject:nil afterDelay:10];
 }
 
 -(void)adImageViewTapAction:(UIGestureRecognizer *)gesture
@@ -133,20 +140,28 @@
     [self.navigationController pushViewController:waterflowController animated:YES];
 }
 
--(NSUInteger)supportedInterfaceOrientations
-{
-    return UIInterfaceOrientationMaskLandscape;
-}
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    if (toInterfaceOrientation == UIInterfaceOrientationPortrait
-        || toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
-        
-        return NO;
-    }
+    if (IDIOM == IPAD){
     
-    return YES;
+        if (toInterfaceOrientation == UIInterfaceOrientationPortrait
+            || toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+            
+            return NO;
+        }
+    
+        return YES;
+        
+    }else{
+        
+        if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft
+            || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+            
+            return NO;
+        }
+        
+        return YES;
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -163,8 +178,6 @@
     self.interface = nil;
     
     self.detailsScrollView = nil;
-    
-//    self.adView = nil;
     
     self.adInterface.delegate = nil;
     self.adInterface = nil;
@@ -184,26 +197,30 @@
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    if (scrollView == self.detailsScrollView) {
-        
-        CGPoint bottomOffset = CGPointMake(0, self.mScrollView.contentSize.height - self.mScrollView.bounds.size.height);
-        [self.mScrollView setContentOffset:bottomOffset animated:YES];
+    if (IDIOM == IPAD) {
+        if (scrollView == self.detailsScrollView) {
+            
+            CGPoint bottomOffset = CGPointMake(0, self.mScrollView.contentSize.height - self.mScrollView.bounds.size.height);
+            [self.mScrollView setContentOffset:bottomOffset animated:YES];
+        }
     }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (scrollView == self.detailsScrollView) {
-        
-        if (scrollView.contentOffset.x+scrollView.frame.size.width >= scrollView.contentSize.width
-            && !_isLoading) {
+    if (IDIOM == IPAD) {
+        if (scrollView == self.detailsScrollView) {
             
-            _isLoading = YES;
-            self.interface = [[[MainPageInterface alloc] init] autorelease];
-            self.interface.delegate = self;
-            
-            [self.interface getAlbumListByPageNum:_pageNum];
-            
+            if (scrollView.contentOffset.x+scrollView.frame.size.width >= scrollView.contentSize.width
+                && !_isLoading) {
+                
+                _isLoading = YES;
+                self.interface = [[[MainPageInterface alloc] init] autorelease];
+                self.interface.delegate = self;
+                
+                [self.interface getAlbumListByPageNum:_pageNum];
+                
+            }
         }
     }
 }
@@ -416,6 +433,7 @@
         imageView.tag = idx;
         
         imageView.contentMode = UIViewContentModeScaleAspectFill;
+        imageView.clipsToBounds = YES;
         imageView.imageURL = [NSURL URLWithString:ad.picUrl];
         imageView.userInteractionEnabled = YES;
         
@@ -428,15 +446,18 @@
         
     }
     
+    CGRect cycleScrollViewFrame = CGRectMake(0, 0
+                                             , self.view.frame.size.width
+                                             , IDIOM == IPAD?CYCLE_SCROLLVIEW_HEIGHT_PAD:CYCLE_SCROLLVIEW_HEIGHT_PHONE);
+    
     self.cycleScrollView = [[[CycleScrollView alloc]
-                             initWithFrame:CGRectMake(0, 0, 1024, 360)
+                             initWithFrame:cycleScrollViewFrame
                              cycleDirection:CycleDirectionLandscape
                              views:self.headerScrollViewArray] autorelease];
     self.cycleScrollView.delegate = self;
+    self.cycleScrollView.backgroundColor = [UIColor redColor];
     
     [self.mScrollView insertSubview:self.cycleScrollView belowSubview:self.adTitleGroupView];
-    
-    
     
 }
 

@@ -46,7 +46,7 @@
     
     if (num_iid && num_iid.length > 0) {
     
-        NSString *urlStr = [NSString stringWithFormat:@"http://gw.api.taobao.com/router/rest?method=taobao.taobaoke.items.detail.get&num_iids=%@&fields=click_url&outer_code=%@",num_iid,@"baby"];
+        NSString *urlStr = [NSString stringWithFormat:@"http://gw.api.taobao.com/router/rest?method=taobao.taobaoke.items.detail.get&num_iids=%@&fields=click_url&outer_code=%@",num_iid,@"baby1"];
         
         urlStr = [TaobaoUrlSignGenerateUtil dealUrl2TaobaoStyle:urlStr];
         
@@ -94,7 +94,7 @@
         for (NSDictionary *dict in itemsArray) {
             
             NSString *url = [dict objectForKey:@"click_url"];
-            
+
             [self.delegate getTaokeItemDetailsByNumiidDidFinished:url];
             
             break;

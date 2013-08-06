@@ -7,8 +7,17 @@
 //
 
 #import "MySingleton.h"
+
+#import "RuntimeParamInterface.h"   
+
 //#import "CategoryRecommendModel.h"
 //#import "ShopRecommendModel.h"
+
+@interface MySingleton()
+
+@property (nonatomic,retain) RuntimeParamInterface *interface;
+
+@end
 
 @implementation MySingleton
 
@@ -24,6 +33,13 @@
         if (!sharedSingleton)
             sharedSingleton = [[MySingleton alloc] init];
         
+        if (sharedSingleton.appKey == NULL || sharedSingleton.appSecret == NULL
+            || sharedSingleton.taokeName == NULL) {
+            //获取运行时参数
+            sharedSingleton.interface = [[[RuntimeParamInterface alloc] init] autorelease];
+            [sharedSingleton.interface getParam];
+        }
+        
         return sharedSingleton;
     }
 }
@@ -32,9 +48,12 @@
     self = [super init];
     
     if (self) {
+//        self.appKey = @"21125417";
+//        self.appSecret = @"2b4fc27525fd9a225cdedcbb0a6862a7";
+        
         self.appKey = @"21125417";
         self.appSecret = @"2b4fc27525fd9a225cdedcbb0a6862a7";
-//        _baseInterfaceUrl = @"http://pp.zcom.com";
+        self.taokeName = @"杜冷丁MM";
     }
     
     return self;
@@ -194,5 +213,11 @@
 //    
 //    [self saveSettingsDict:settingsDict];
 //}
+
+-(void)dealloc
+{
+    self.interface = nil;
+    [super dealloc];
+}
 
 @end

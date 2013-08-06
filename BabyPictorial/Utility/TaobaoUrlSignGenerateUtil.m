@@ -32,7 +32,7 @@
         [sortedString appendString:[MySingleton sharedSingleton].appSecret];
         
         NSString *signStr = [sortedString md5HexDigest];
-//        NSLog(@"--[%@]----------[%@]",sortedString,signStr);
+        //        NSLog(@"--[%@]----------[%@]",sortedString,signStr);
         return signStr;
     }
     
@@ -55,20 +55,21 @@
         //截取参数之前的url地址
         [resultUrl appendString:[orignUrl substringToIndex:[orignUrl rangeOfString:@"?"].location+1]];
         
-//        //http方式固定参数
-//        [resultUrl appendString:[NSString stringWithFormat:@"?v=2.0&format=json&sign_method=md5&app_key=%@&",[MySingleton sharedSingleton].appKey]];
+        //        //http方式固定参数
+        //        [resultUrl appendString:[NSString stringWithFormat:@"?v=2.0&format=json&sign_method=md5&app_key=%@&",[MySingleton sharedSingleton].appKey]];
         //获取当前事件
         NSDateFormatter * dateFormatter = [[[NSDateFormatter alloc] init]autorelease];
         [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
         NSDate *date = [NSDate date];
-        NSString * timestamp = @"2012-09-02 23:55:55";//[dateFormatter stringFromDate:date];
-//        [resultUrl appendString:timestamp];
-
+        NSString * timestamp = [dateFormatter stringFromDate:date];//@"2012-09-02 23:55:55";//
+        
+        
         //拼装http方式固定参数
-        NSString *tmpUrl = [NSString stringWithFormat:@"%@&v=2.0&format=json&sign_method=md5&app_key=%@&timestamp=%@"
+        NSString *tmpUrl = [NSString stringWithFormat:@"%@&v=2.0&format=json&sign_method=md5&app_key=%@&timestamp=%@&nick=%@&is_mobile=true"
                             ,orignUrl
                             ,[MySingleton sharedSingleton].appKey
-                            ,timestamp];
+                            ,timestamp
+                            ,[MySingleton sharedSingleton].taokeName];
         
         
         
@@ -89,10 +90,10 @@
         [sortedString appendString:[MySingleton sharedSingleton].appSecret];
         //生成md5签名
         NSString *signStr = [sortedString md5HexDigest];
-
+        
         //拼装最终淘宝风格的url
         [resultUrl appendString:[NSString stringWithFormat:@"sign=%@",signStr]];
-//        NSLog(@"-----------[%@]",resultUrl);
+        //        NSLog(@"-----------[%@]",resultUrl);
         
         
         return resultUrl;

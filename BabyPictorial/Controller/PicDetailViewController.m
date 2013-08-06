@@ -107,7 +107,8 @@
                          objectAtIndex:self.navigationController.viewControllers.count-2] navigationItem] title];
     
     //返回
-    UIBarButtonItem *backBtn = [PicDetailViewController createSquareBarButtonItemWithTitle:parentTitle==nil?@"宝贝画报HD":parentTitle
+    UIBarButtonItem *backBtn = [PicDetailViewController createSquareBarButtonItemWithTitle:parentTitle.length>0
+                                ?parentTitle:@"返回"
                                                                                     target:self
                                                                                     action:@selector(backAction)
                                                                                  bgImgName:@"back_btn_bg.png"
@@ -236,8 +237,10 @@
     
     self.interface.delegate = nil;
     self.interface = nil;
-    
+
+    self.imageView.delegate = nil;
     self.imageView = nil;
+
     self.descriptionLabel = nil;
     
     self.mScrollView = nil;
@@ -249,6 +252,30 @@
     self.pdm = nil;
     
     [super dealloc];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    if (IDIOM == IPAD){
+        
+        if (toInterfaceOrientation == UIInterfaceOrientationPortrait
+            || toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+            
+            return NO;
+        }
+        
+        return YES;
+        
+    }else{
+        
+        if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft
+            || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
+            
+            return NO;
+        }
+        
+        return YES;
+    }
 }
 
 #pragma mark - Gesture 
@@ -292,7 +319,7 @@
                 
                 PicDetailModel *pdmTmp = [self.pdm.ownerAlbum.picArray objectAtIndex:currentIdx+1];
                 
-                col.picDescTitle = pdmTmp.descTitle;
+                col.picDescTitle = pdmTmp.descTitle.length>0?pdmTmp.descTitle:pdmTmp.albumName;
                 col.navTitle = self.pdm.ownerAlbum.albumName;
                 col.pid = pdmTmp.pid;
                 col.smallPicUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@_100x100.jpg",pdmTmp.picUrl]];
@@ -338,7 +365,7 @@
                 
                 PicDetailModel *pdmTmp = [self.pdm.ownerAlbum.picArray objectAtIndex:currentIdx-1];
                 
-                col.picDescTitle = pdmTmp.descTitle;
+                col.picDescTitle = pdmTmp.descTitle.length>0?pdmTmp.descTitle:pdmTmp.albumName;
                 col.navTitle = self.pdm.ownerAlbum.albumName;
                 col.pid = pdmTmp.pid;
                 col.smallPicUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@_100x100.jpg",pdmTmp.picUrl]];
@@ -401,7 +428,7 @@
     self.pdm = pdm;
     
     
-    self.descriptionLabel.text = pdm.descTitle;
+    self.descriptionLabel.text = pdm.descTitle.length>0?pdm.descTitle:pdm.albumName;
     
     
     AlbumView *albumView = [[[NSBundle mainBundle] loadNibNamed:@"AlbumView"
@@ -508,8 +535,13 @@
     imageView.frame = imageFrame;
     
     CGRect frame = parentView.superview.frame;
-    frame.size.height = parentView.frame.size.height + parentView.frame.origin.y;
+    frame.size.height = parentView.frame.size.height + parentView.frame.origin.y + self.descriptionLabel.frame.size.height;
     parentView.superview.frame = frame;
+    
+    CGRect descLabelFrame = self.descriptionLabel.frame;
+    descLabelFrame.origin.y = frame.size.height - descLabelFrame.size.height;
+    self.descriptionLabel.frame = descLabelFrame;
+    
     
     [self setShadow];
     

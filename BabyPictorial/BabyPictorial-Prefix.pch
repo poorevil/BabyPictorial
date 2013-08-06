@@ -14,7 +14,32 @@
 #endif
 
 //=============================
+
+/*
+ * 用于判断当前设备为pad或phone
+ */
+#define IDIOM    UI_USER_INTERFACE_IDIOM()
+#define IPAD     UIUserInterfaceIdiomPad
+
+
 #define iPhone5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
+
+#define ScreenHeight [[UIScreen mainScreen] bounds].size.height
+#define ScreenWidth [[UIScreen mainScreen] bounds].size.width
+#define StateBarHeight 20
+#define MainHeight (ScreenHeight - StateBarHeight)
+#define MainWidth ScreenWidth
+
+
+//=============================
+//软件标识,对应服务器端admin_app表中主键
+#define APP_ID 4
+
+
+
+
+//=============================
+
 
 //记录消息推送device token的类型，用于区分多个不同应用
 #define TOKEN_TYPE @"discount30"
@@ -22,12 +47,6 @@
 
 //是否点击过去评价按钮
 #define IS_CLICKED_GIVE_GOOD_BTN_KEY @"isClickedGiveGoodBtnKey"
-
-#define ScreenHeight [[UIScreen mainScreen] bounds].size.height
-#define ScreenWidth [[UIScreen mainScreen] bounds].size.width
-#define StateBarHeight 20
-#define MainHeight (ScreenHeight - StateBarHeight)
-#define MainWidth ScreenWidth
 
 
 #define DEVICETOKENSTRINGKEY @"DeviceTokenStringKey"
