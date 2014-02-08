@@ -102,12 +102,12 @@
     for (NSInteger idx = 0 ; idx < urlArray.count ; idx++) {
         PicDetailModel *pdm = [urlArray objectAtIndex:idx];
         
-        NSString *url = [NSString stringWithFormat:@"%@_100x100.jpg",pdm.picUrl];
+        NSString *url = [NSString stringWithFormat:@"%@_160x160.jpg",pdm.picUrl];
         
         CGRect frame = CGRectMake(idx%3 * 100, idx>2?100:0, 98, 98);
         
         EGOImageView *image = [[EGOImageView alloc] initWithFrame:frame];
-        image.contentMode = UIViewContentModeScaleAspectFit;
+        image.contentMode = UIViewContentModeScaleAspectFill;//UIViewContentModeScaleAspectFit;
         image.clipsToBounds = YES;
         image.tag = idx+10;
         

@@ -144,6 +144,9 @@
     self.picArray = nil;
     self.mTableView = nil;
     
+    self.interface.delegate = nil;
+    self.interface = nil;
+    
     [super dealloc];
 }
 

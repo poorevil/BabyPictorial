@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>F67270FA-44FF-425A-ACD6-4EF76E4DA263</string>
+	<key>IDESourceControlProjectName</key>
+	<string>BabyPictorial</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>521E2960-E426-4A9B-A7BD-12CFB582421A</key>
+		<string>https://github.com/poorevil/BabyPictorial.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>BabyPictorial.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>521E2960-E426-4A9B-A7BD-12CFB582421A</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/poorevil/BabyPictorial.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>521E2960-E426-4A9B-A7BD-12CFB582421A</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>521E2960-E426-4A9B-A7BD-12CFB582421A</string>
+			<key>IDESourceControlWCCName</key>
+			<string>BabyPictorial</string>
+		</dict>
+	</array>
+</dict>
+</plist>
