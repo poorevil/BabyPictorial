@@ -99,7 +99,7 @@
             pdm.picUrl = [picDict objectForKey:@"pic_path"];
             pdm.albumName = [picDict objectForKey:@"albunm_name"];
             pdm.taokeNumiid = [picDict objectForKey:@"taoke_num_iid"];
-            
+            pdm.taokeUrl = [picDict objectForKey:@"taoke_url"];
             
             /*
              *recommendAlbum

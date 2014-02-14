@@ -32,6 +32,6 @@
 
 @property (nonatomic,retain) NSMutableArray *recommendAlbumArray;
 
-@property (nonatomic,retain) NSString *taokeUrl;
+@property (nonatomic,retain) NSString *taokeUrl;//淘客地址
 
 @end

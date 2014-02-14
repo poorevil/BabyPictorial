@@ -270,9 +270,17 @@
 //    [self updateScrollViewContentSize];
     
     
-    self.taokeItemDetailInterface = [[[TaokeItemDetailInterface alloc] init] autorelease];
-    self.taokeItemDetailInterface.delegate = self;
-    [self.taokeItemDetailInterface getTaokeItemDetailsByNumiid:self.pdm.taokeNumiid];
+    
+    //已经用不了淘宝的API鸟。。。。
+    if (self.pdm.taokeUrl.length > 0) {
+        [self getTaokeItemDetailsByNumiidDidFinished:self.pdm.taokeUrl];
+    }
+    
+    
+    
+//    self.taokeItemDetailInterface = [[[TaokeItemDetailInterface alloc] init] autorelease];
+//    self.taokeItemDetailInterface.delegate = self;
+//    [self.taokeItemDetailInterface getTaokeItemDetailsByNumiid:self.pdm.taokeNumiid];
     
     
 //    [self initGesture];
